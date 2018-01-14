@@ -1,0 +1,61 @@
+<!-- Add File Modal - #addNewFile -->
+<div class="modal fade" id="addNewFile" tabindex="-1" role="dialog" aria-hidden="true" aria-labelledby="addNewFile">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<form name="fileUpload" method="POST" enctype="multipart/form-data" action="<?php echo $this->url(array('type'=>$this->fileType['type']), 'FileDetails'); ?>">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+					</button>
+					<h4>
+						<?php echo (isset($this->oFile) ? 'Edit' : 'Add New'); ?> <?php echo $this->fileType['title']; ?> File
+					</h4>
+				</div>
+				<div class="modal-body sm">
+					<div class="module-640">
+						<div class="content">
+							<div class="form-group row">
+								<label for="newFileNameModal" class="col-sm-4 col-form-label">File Name</label>
+								<div class="col-sm-8">
+									<input class="form-control" type="text" name="Name" id="newFileNameModal" aria-describedby="newFileNameModalHelp" />
+									<span id="newFileNameModalHelp" class="form-text text-muted"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="newFileStartDateModal" class="col-sm-4 col-form-label">Start Date</label>
+								<div class="col-sm-8">
+									<input class="form-control fileDatePicker" type="text" name="StartDate" id="newFileStartDateModal" aria-describedby="newFileStartDateModalHelp" placeholder="Select a date...">
+									<span id="newFileStartDateModalHelp" class="form-text text-muted"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="newFileValidThroughModal" class="col-sm-4 col-form-label">Valid Through</label>
+								<div class="col-sm-8">
+									<input class="form-control fileDatePicker" name="EndDate" type="text" id="newFileValidThroughModal" aria-describedby="newFileValidThroughModalHelp" placeholder="Select a date...">
+									<span id="newFileValidThroughModalHelp" class="form-text text-muted"></span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="chooseNewFileModal" class="col-sm-4 col-form-label">File</label>
+								<div class="col-sm-8">
+									<input type="file" name="oFile" class="form-control-file" id="chooseNewFileModal" aria-describedby="chooseNewFileModalHelp" accept=".xls,.xlsx,.pdf,.ppt,.pptx,.png,.jpeg,.doc,.docx" >
+									<span id="chooseNewFileModalHelp" class="form-text text-muted">
+										<strong>Available file formats :</strong> .pdf, .xls, .xlsx, .doc, .docx, .ppt, .pptx, .jpeg, .png
+									</span>
+								</div>
+							</div>
+						</div><!-- /.content -->
+					</div><!-- /.module-640 -->
+
+				</div><!-- /.modal-body -->
+				<div class="module-499">
+					<div class="module-499-wrapper">
+						<input type="hidden" value="<?php echo $this->fileType['type']; ?>" name="type" />
+						<input type="button" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Cancel">
+						<input type="submit" class="module-499-btn right save" value="ADD">
+					</div><!-- /.module-499-wrapper -->
+				</div><!-- /.module-499 -->
+			</form>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

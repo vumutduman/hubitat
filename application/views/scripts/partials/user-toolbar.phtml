@@ -1,0 +1,18 @@
+<div class="module-301 dropdown">
+	<a href="javascript:void(0)" id="profileButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		<img src="content/images/profile/sm/<?php echo $this->oUser['Avatar']; ?>" alt="<?php echo $this->oUser['Username']; ?>">
+		<span class="name"><?php echo $this->oUser['Username']; ?></span>
+		<span class="hubitat down-arrow-bold"></span>
+	</a>
+	<div class="dropdown-menu dropdown-menu-right module-301-dropdown" aria-labelledby="profileButton">
+		<div class="info">
+			<img src="content/images/profile/md/<?php echo $this->oUser['Avatar']; ?>" alt="<?php echo $this->oUser['Username']; ?>">
+			<span class="name"><?php echo $this->oUser['Username']; ?></span>
+			<span class="mail"><?php echo $this->oUser['Email']; ?></span>
+		</div>
+		<div class="links">
+			<a href="<?php echo $this->url(array('crewId'=>$this->oUser['_id']), 'Crew'); ?>" title="Profile Settings">Profile Settings</a>
+			<a href="<?php echo $this->url(array(), 'Logout'); ?>" title="Sign Out">Sign Out</a>
+		</div>
+	</div>
+</div><!-- /.module-301 -->

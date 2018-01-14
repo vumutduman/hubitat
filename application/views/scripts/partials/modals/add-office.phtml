@@ -1,0 +1,79 @@
+<!-- Add Office Modal - #addOffice -->
+<div class="modal fade" id="addOffice" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<form method="POST" action="<?php echo $this->url(array(), 'OfficeAdd'); ?>" enctype="multipart/form-data">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+					</button>
+					<h4>Add New Office</h4>
+				</div>
+				<div class="modal-body md">
+					<div class="module-400">
+						<div class="image">
+							<img src="content/images/profile/md/empty.png">
+							<a href="javascript:void(0)" onclick="$('#changeOfficeImageModal').click();">Change Image</a>
+							<input type="file" class="form-control-file" id="changeOfficeImageModal">
+						</div>
+						<div class="content">
+							<div class="form-group row">
+								<label for="officeNameModal" class="col-sm-3 col-form-label">Name</label>
+								<div class="col-sm-9">
+									<input class="form-control" type="text" name="Name" id="officeNameModal">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="officeShortNameModal" class="col-sm-3 col-form-label">Short Name</label>
+								<div class="col-sm-9">
+									<input class="form-control" type="text" name="ShortName" id="officeShortNameModal">
+									<span class="form-text text-muted">It appears next to work order number</span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="officeEmailModal" class="col-sm-3 col-form-label">Email</label>
+								<div class="col-sm-9">
+									<input class="form-control" type="mail" name="Email" id="officeEmailModal">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="officePhoneModal" class="col-sm-3 col-form-label">Phone</label>
+								<div class="col-sm-9">
+									<input class="form-control" type="tel" name="Phone" id="officePhoneModal">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="officeAddressModal" class="col-sm-3 col-form-label">Address</label>
+								<div class="col-sm-9">
+									<textarea class="form-control" name="Address" id="officeAddressModal" rows="3"></textarea>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="officeContactModal" class="col-sm-3 col-form-label">Person in Charge</label>
+								<div class="col-sm-9">
+									<select class="form-control custom-select" id="officeContact" name="crewId" data-toggle="tooltip" data-placement="top" title="Only assigned to this office and crews without offices">
+										<?php if(isset($this->oCrewList)){ ?>
+											<?php foreach($this->oCrewList as $crew){ ?>
+												<option value="<?php echo $crew['_id']; ?>">
+													<?php echo $crew['Name'].' '.$crew['Surname']; ?>
+												</option>
+											<?php } ?>
+										<?php } ?>
+									</select>
+
+								</div>
+							</div>
+						</div><!-- /.content -->
+					</div><!-- /.module-400 -->
+
+				</div><!-- /.modal-body -->
+				<div class="module-499">
+					<div class="module-499-wrapper">
+						<input type="submit" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Cancel">
+						<input type="submit" role="button" class="module-499-btn right save" value="SAVE">
+					</div><!-- /.module-499-wrapper -->
+				</div><!-- /.module-499 -->
+			</div><!-- /.modal-content -->
+		</form>
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

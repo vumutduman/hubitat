@@ -1,0 +1,149 @@
+<?php echo $this->render('partials/modals/delete-office.phtml'); ?>
+<?php echo $this->render('partials/modals/add-office.phtml'); ?>
+<li class="second-sidebar">
+	<div class="second-sidebar-header">
+		<div class="second-sidebar-title">
+			<h3><?php echo $this->moduleTitle; ?></h3>
+		</div>
+		<div class="second-sidebar-actions">
+			<a class="search" data-toggle="collapse" href="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch"><span class="hubitat magnifier-lg"></span></a>
+			<a href="javascript:void(0)" class="add-item" data-toggle="modal" data-target="#addOffice"><span class="hubitat plus"></span></a>
+		</div>
+	</div>
+	<div class="second-sidebar-wrapper">
+		<div class="list-101">
+			<div class="second-sidebar-search collapse" id="collapseSearch">
+				<div class="form-group">
+					<input type="text" class="form-control search" data-target="list-container" id="secondSidebarSearch" aria-describedby="searchHelp" placeholder="Search for <?php echo $this->moduleTitle; ?>">
+					<span id="searchHelp" class="form-text text-muted">Start typing to filter office results.</span>
+				</div>
+			</div>
+
+			<!-- İsme göre sıralanacak -->
+			<div class="list-container">
+				<?php if(isset($this->oOfficeList)){ ?>
+					<?php foreach($this->oOfficeList as $listItem){ ?> 
+						<a href="<?php echo $this->url(array('officeId'=>$listItem['_id']), 'Office'); ?>" title="Details" class="list-101-item <?php echo ($listItem['_id'] == $this->oOffice['_id'] ? 'active' : ''); ?>">
+							<?php echo $listItem['Name']; ?>
+						</a>
+					<?php } ?>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+</li><!-- /.second-sidebar -->
+
+<li class="main-content">
+	<div class="main-content-header">
+		<div class="module-300">
+			<a href="<?php echo $this->url(array(), 'Overview'); ?>" title="Overview">Overview</a>
+			<span class="hubitat right-arrow-bold divider"></span>
+			<a href="<?php echo $this->url(array(), 'Offices'); ?>" title="Offices">Offices</a>
+			<span class="hubitat right-arrow-bold divider"></span>
+			<span class="current-page"><?php echo $this->oOffice['Name']." (".$this->oOffice['ShortName']; ?>)</span>
+		</div><!-- /.module-300 -->
+		<?php echo $this->render('partials/user-toolbar.phtml'); ?>
+	</div><!-- /.main-content-header -->
+	<form method="POST" action="" enctype="multipart/form-data">
+		<div class="main-content-wrapper">
+			<div class="module md">
+				<div class="module-header dropdown">
+					<h3>Office</h3>
+					<a href="javascript:void(0)" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="hubitat settings" ></span>
+					</a>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<a class="dropdown-item danger" href="javascript:void(0)" data-toggle="modal" data-target="#deleteOffice">Delete Office</a>
+					</div>
+				</div>
+				<div class="module-content">
+					<div class="module-400">
+						<div class="image">
+							<img src="content/images/profile/md/<?php echo $this->oOffice['Avatar']; ?>">
+							<a href="javascript:void(0)" onclick="$('#changeOfficeImage').click();">Change Image</a>
+							<input type="file" class="form-control-file" name="ProfileImage" id="changeOfficeImage">
+						</div>
+						<div class="content">
+							<div class="form-group row">
+								<label for="officeName" class="col-sm-3 col-form-label">Name</label>
+								<div class="col-sm-9">
+									<input class="form-control" type="text" value="<?php echo $this->oOffice['Name']; ?>" name="Name" id="officeName">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="officeShortName" class="col-sm-3 col-form-label">Short Name</label>
+								<div class="col-sm-9">
+									<input class="form-control" type="text" value="<?php echo $this->oOffice['ShortName']; ?>" name="ShortName" id="officeShortName">
+									<span class="form-text text-muted">It appears next to work order number</span>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="officeEmail" class="col-sm-3 col-form-label">Email</label>
+								<div class="col-sm-9">
+									<input class="form-control" type="mail" id="officeEmail" name="Email" value="<?php echo $this->oOffice['Email']; ?>">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="officePhone" class="col-sm-3 col-form-label">Phone</label>
+								<div class="col-sm-9">
+									<input class="form-control" type="tel" name="Phone" id="officePhone" value="<?php echo $this->oOffice['Phone']; ?>">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="officeAddress" class="col-sm-3 col-form-label">Address</label>
+								<div class="col-sm-9">
+									<textarea class="form-control" id="officeAddress" name="Address" rows="3"><?php echo $this->oOffice['Address']; ?></textarea>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label for="officeContact" class="col-sm-3 col-form-label">
+									Person in Charge
+								</label>
+								<div class="col-sm-9" style="font-size: 13px;">
+									<?php if(isset($this->oCrewList)){ ?>
+										<select class="form-control custom-select" id="officeContact" name="crewId" data-toggle="tooltip" data-placement="top" title="Only unassigned crews will be seen here">
+											<?php if(!isset($this->Office['Person']) || $this->Office['Person'] == null){ ?>
+												<option value="" selected="selected">Unassigned</option>
+											<?php }else{ ?>
+												<option value="">Unassigned</option>
+											<?php } ?>
+
+											<?php foreach($this->oCrewList as $crew){ ?>
+
+												<?php if($crew['_id'] == $this->oOffice['Person']['_Id']){ ?>
+													<option value="<?php echo $crew['_id']; ?>" selected="selected">
+														<?php echo $crew['Name'].' '.$crew['Surname']; ?>
+													</option>
+												<?php }else{ ?>
+													<option value="<?php echo $crew['_id']; ?>">
+														<?php echo $crew['Name'].' '.$crew['Surname']; ?>
+													</option>
+												<?php } ?>
+											<?php } ?>
+										</select>
+
+										<br />
+										<?php if($this->oOffice['Person']){ ?>
+											<a href="<?php echo $this->url(array('crewId'=>$this->oOffice['Person']['_Id']), 'Crew'); ?>" class="link">Show Profile</a>
+										<?php } ?>
+
+									<?php } ?>
+								</div>
+							</div>
+						</div><!-- /.content -->
+					</div><!-- /.module-400 -->
+				</div><!-- /.module-content -->
+			</div>
+		</div><!-- /.main-content-wrapper -->
+
+
+		<div class="module-499">
+			<div class="module-499-wrapper">
+				<input type="submit" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Cancel">
+				<input type="submit" role="button" class="module-499-btn right save" value="SAVE">
+			</div><!-- /.module-499-wrapper -->
+		</div><!-- /.module-499 -->
+	</form>
+
+</li><!-- /.main-content -->

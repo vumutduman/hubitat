@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>#201612-0124 - Work Orders - Hubitat</title>
+
+		<link rel="stylesheet" type="text/css" href="dist/css/bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="dist/css/jquery.mCustomScrollbar.css">
+		<link rel="stylesheet" type="text/css" href="dist/css/flatpickr.min.css">
+		<link rel="stylesheet" type="text/css" href="dist/css/airbnb.css">
+		<link rel="stylesheet" type="text/css" href="dist/css/hubitat-font.css">
+		<link rel="stylesheet" type="text/css" href="dist/css/main.css">
+
+		<link rel="icon" type="image/png" href="content/images/favicon.png" />
+		<!-- for iOS devices -->
+		<meta name="apple-mobile-web-app-title" content="Hubitat" />
+		<link rel="apple-touch-icon-precomposed" href="content/images/apple-touch-icon.png" />
+	</head>
+
+	<body>
+
+		<!-- Assign that work order to a crew - #assignToCrew-->
+		<div class="modal fade" id="assignToCrew" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+							<!-- &#x2715; -->
+						</button>
+						<h4>Assign the Work Order to a Crew</h4>
+						<p class="text-muted">#201612-0124 / Istanbul</p>
+					</div>
+					<div class="modal-body xs">
+						<div class="module-604">
+							<div class="custom-controls-stacked">
+								<label class="custom-control custom-radio">
+									<input id="crewName1" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Ersin Çelik</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName2" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Seyfullah Altınkaya</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName3" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Wouter van Beek</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName4" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Lars van der Horst</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName5" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Mathijs Vink</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName6" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Yasmin Dikmen</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName7" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Yakup Güneş</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName8" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Ecevit Şimşek</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName9" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Kauê Fernandes</span>
+								</label>
+							</div><!-- /.custom-controls-stacked -->
+						</div><!-- /.module-604 -->
+
+					</div><!-- /.modal-body -->
+
+					<div class="module-499">
+							<div class="module-499-wrapper">
+								<input type="submit" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Cancel">
+								<input type="submit" role="button" class="module-499-btn right save" value="ASSIGN">
+							</div><!-- /.module-499-wrapper -->
+						</div><!-- /.module-499 -->
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+
+
+		<!-- Assign that work order to another crew - #changeCrew-->
+		<div class="modal fade" id="changeCrew" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+							<!-- &#x2715; -->
+						</button>
+						<h4>Assign the Work Order to Another Crew</h4>
+						<p class="text-muted">#201612-0124 / Istanbul</p>
+					</div>
+					<div class="modal-body xs">
+						<div class="module-604">
+							<div class="custom-controls-stacked">
+								<label class="custom-control custom-radio">
+									<input id="crewName1" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Ersin Çelik</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName2" name="crew-names" type="radio" class="custom-control-input" checked>
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Seyfullah Altınkaya</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName3" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Wouter van Beek</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName4" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Lars van der Horst</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName5" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Mathijs Vink</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName6" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Yasmin Dikmen</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName7" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Yakup Güneş</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName8" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Ecevit Şimşek</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="crewName9" name="crew-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Kauê Fernandes</span>
+								</label>
+							</div><!-- /.custom-controls-stacked -->
+						</div><!-- /.module-604 -->
+
+					</div><!-- /.modal-body -->
+
+					<div class="module-499">
+							<div class="module-499-wrapper">
+								<input type="submit" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Don't Change">
+								<input type="submit" role="button" class="module-499-btn right save" value="CHANGE">
+							</div><!-- /.module-499-wrapper -->
+						</div><!-- /.module-499 -->
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+		<!-- Assign that work order to another office - #changeOffice-->
+		<div class="modal fade" id="changeOffice" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+							<!-- &#x2715; -->
+						</button>
+						<h4>Assign the Work Order to Another Office</h4>
+						<p class="text-muted">#201612-0124 / Istanbul</p>
+					</div>
+					<div class="modal-body xs">
+						<div class="module-604">
+							<div class="custom-controls-stacked">
+								<label class="custom-control custom-radio">
+									<input id="officeName1" name="office-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Houston</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="officeName2" name="office-names" type="radio" class="custom-control-input" checked>
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Istanbul</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="officeName3" name="office-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Izmir</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="officeName4" name="office-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Rotterdam</span>
+								</label>
+								
+							</div><!-- /.custom-controls-stacked -->
+						</div><!-- /.module-604 -->
+
+					</div><!-- /.modal-body -->
+
+					<div class="module-499">
+							<div class="module-499-wrapper">
+								<input type="submit" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Don't Change">
+								<input type="submit" role="button" class="module-499-btn right save" value="CHANGE">
+							</div><!-- /.module-499-wrapper -->
+						</div><!-- /.module-499 -->
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+		<!-- Change Work Order Agency - #changeWorkOrderAgency-->
+		<div class="modal fade" id="changeWorkOrderAgency" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+							<!-- &#x2715; -->
+						</button>
+						<h4>Change Agency</h4>
+						<p class="text-muted">#201612-0124 / Istanbul</p>
+					</div>
+					<div class="modal-body xs">
+						<div class="module-604">
+							<div class="custom-controls-stacked">
+								<label class="custom-control custom-radio">
+									<input id="agencyNameRadio1" name="agency-names" type="radio" class="custom-control-input" checked>
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Agency Name A</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="agencyNameRadio2" name="agency-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Agency Name B</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="agencyNameRadio2" name="agency-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Agency Name C</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="agencyNameRadio2" name="agency-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Agency Name D</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="agencyNameRadio2" name="agency-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Agency Name E</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="agencyNameRadio2" name="agency-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Agency Name F</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="agencyNameRadio2" name="agency-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Agency Name G</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="agencyNameRadio2" name="agency-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Agency Name H</span>
+								</label>
+								<label class="custom-control custom-radio">
+									<input id="agencyNameRadio2" name="agency-names" type="radio" class="custom-control-input">
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description">Agency Name I</span>
+								</label>
+							</div><!-- /.custom-controls-stacked -->
+						</div><!-- /.module-604 -->
+
+					</div><!-- /.modal-body -->
+
+					<div class="module-499">
+							<div class="module-499-wrapper">
+								<input type="submit" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Don't Change">
+								<input type="submit" role="button" class="module-499-btn right save" value="CHANGE">
+							</div><!-- /.module-499-wrapper -->
+						</div><!-- /.module-499 -->
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+		<!-- Add Work Order Modal - #addWorkOrder -->
+		<div class="modal fade" id="addWorkOrder" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+							<!-- &#x2715; -->
+						</button>
+						<h4>Add New Work Order</h4>
+					</div>
+					<div class="modal-body md">
+						
+
+					</div><!-- /.modal-body -->
+					<div class="module-499">
+							<div class="module-499-wrapper">
+								<input type="submit" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Don't Add">
+								<input type="submit" role="button" class="module-499-btn right save" value="ADD WORK ORDER">
+							</div><!-- /.module-499-wrapper -->
+						</div><!-- /.module-499 -->
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+		<!-- Certificate Modal - #certificate -->
+		<div class="modal fade" id="certificate" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+							<!-- &#x2715; -->
+						</button>
+						<h4>Fixed Halon System Cylinder</h4>
+						<p class="text-muted form-number">FR-903A</p>
+					</div>
+					<div class="module-600 lg">
+						<table class="table table-bordered">
+							<tbody>
+								<tr>
+									<td>
+										<h5>VESSEL NAME</h5>
+										<span>Lady Saliha</span>
+									</td>
+									<td>
+										<h5>ESTIMATED TIME OF DELIVERY</h5>
+										<span>December 12, 2016 - 14:15</span>
+									</td>
+									<td>
+										<h5>PERIOD</h5>
+										<span>10 Years</span>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div><!-- /.module-600 -->
+					<div class="module-600 lg tight">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th colspan="2">
+										<h6>Description of system/technical information</h6>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td width="50%">
+										<strong>1.</strong> Inspection / contents checked by level<br>
+										<strong>2.</strong> Inspection / contents checked by weighing<br>
+										<strong>3.</strong> Inspection / contents checked by pressure<br>
+										<strong>4.</strong> Recharged<br>
+										<strong>5.</strong> Hydrostatically tested
+									</td>
+									<td width="50%">
+										<strong>6.</strong> Valve renewed<br>
+										<strong>7.</strong> Valve repaired<br>
+										<strong>8.</strong> External maintenance<br>
+										<strong>9.</strong> New cylinder<br>
+										<strong>10.</strong> Rejected
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div><!-- /.module-600 -->
+
+					<div class="module-603 xl dropdown">
+						<a id="certificateSettingsDropdownButton" href="javascript:void(0)" class="certificate-settings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="hubitat settings"></span></a>
+						<div class="dropdown-menu dropdown-menu-center" aria-labelledby="certificateSettingsDropdownButton">
+							<a class="dropdown-item" href="#">Mark as Completed</a>
+							<a class="dropdown-item" href="#">Print Certificate</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item danger" href="#">Delete Certificate</a>
+						</div>
+					</div><!-- /.module-603 -->
+
+					<div class="modal-body xl">
+						<div class="module-602">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>TYPE OF GAS CYL.</th>
+										<th>SERIAL NUMBER</th>
+										<th>LAST HYDRO. TEST DATE</th>
+										<th>WORKING PRESS.</th>
+										<th>CAPACITY</th>
+										<th>PRESS.</th>
+										<th>PERFORMED</th>
+										<th scope="row"><span class="hubitat settings-2"></span></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr data-id="1" class="standard">
+										<th scope="row">1</th>
+										<td><input type="text" class="form-control" data-id="1" value="Lady Saliha"></td>
+										<td><input type="text" class="form-control" data-id="2" value="31223456789"></td>
+										<td><input type="text" class="form-control" data-id="3" value="12.11.2011"></td>
+										<td><input type="text" class="form-control" data-id="4" value="Lady Saliha"></td>
+										<td><input type="text" class="form-control" data-id="5" value="3kg."></td>
+										<td><input type="text" class="form-control" data-id="6" value="Lady Saliha"></td>
+										<td><input type="text" class="form-control" data-id="7" value="Lady Saliha"></td>
+										<td scope="action">
+											<a href="javascript:void(0);" data-id="1"><span class="delete hubitat minus-bold"></span></a>
+										</td>
+									</tr>
+									<tr data-id="2" class="standard">
+										<th scope="row">2</th>
+										<td><input type="text" class="form-control" data-id="1" value=""></td>
+										<td><input type="text" class="form-control" data-id="2" value=""></td>
+										<td><input type="text" class="form-control" data-id="3" value=""></td>
+										<td><input type="text" class="form-control" data-id="4" value=""></td>
+										<td><input type="text" class="form-control" data-id="5" value=""></td>
+										<td><input type="text" class="form-control" data-id="6" value=""></td>
+										<td><input type="text" class="form-control" data-id="7" value=""></td>
+										<td scope="action">
+											<a href="javascript:void(0);" data-id="2"><span class="delete hubitat minus-bold"></span></a>
+										</td>
+									</tr>
+									<tr data-id="3" class="standard">
+										<th scope="row">3</th>
+										<td><input type="text" class="form-control" data-id="1" value="-"></td>
+										<td><input type="text" class="form-control" data-id="2" value="-"></td>
+										<td><input type="text" class="form-control" data-id="3" value="-"></td>
+										<td><input type="text" class="form-control" data-id="4" value="-"></td>
+										<td><input type="text" class="form-control" data-id="5" value="-"></td>
+										<td><input type="text" class="form-control" data-id="6" value="-"></td>
+										<td><input type="text" class="form-control" data-id="7" value="-"></td>
+										<td scope="action">
+											<a href="javascript:void(0);" data-id="3"><span class="delete hubitat minus-bold"></span></a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+							<a href="javascript:void(0)" class="add-row-to-certificate"><span class="hubitat plus-bold-solid"></span> Add Row</a>
+						</div><!-- /.module-602 -->
+					</div><!-- /.modal-body -->
+
+					<!-- Revision -->
+					<div class="module sm">
+						<div class="module-content">
+							<div class="container module-899">
+								<div class="content">
+									<form class="row">
+										<div class="form-group col-md-4">
+											<label for="revisionNoModal">Revision No.</label>
+											<input type="number" class="form-control" id="revisionNoModal" value="1" min="1">
+										</div>
+										<div class="form-group col-md-8">
+											<label for="revisionDateModal">Revision Date</label>
+											<input type="date" class="form-control" id="revisionDateModal" value="2017-01-12" aria-describedby="revisionDateHelpModal" placeholder="DD-MM-YYYY" max="2017-01-12">
+											<!-- max değeri bugünün değeri olacak. Bugünden daha ileri bir tarih girişi yapamayacak -->
+
+											<!--<span id="revisionDateHelpModal" class="form-text text-muted">DD-MM-YYYY</span>-->
+										</div>
+									</form>
+								</div><!-- /.content -->
+							</div><!-- /.module-899 -->
+						</div><!-- /.module-content -->
+					</div><!-- /.module .md -->
+					
+
+					<div class="module-499">
+							<div class="module-499-wrapper">
+								<input type="submit" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Revert Change(s)">
+								<input type="submit" role="button" class="module-499-btn right save" value="APPLY CHANGE(S)">
+							</div><!-- /.module-499-wrapper -->
+						</div><!-- /.module-499 -->
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+
+		<!-- Delete Reason Modal - #deleteWorkOrder -->
+		<div class="modal fade" id="deleteWorkOrder" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+							<!-- &#x2715; -->
+						</button>
+						<h4>Delete Work Order</h4>
+						<p class="text-muted">#201612-0124 / Istanbul</p>
+					</div>
+					<div class="modal-body md">
+						<div class="module-405">
+							<p>
+								You are about to delete the work order. <strong>It cannot be undone.</strong><br> Please, write your reason.
+							</p>
+							<form>
+								<div class="form-group">
+									<label for="deletingReasonModal">Deleting Reason</label>
+									<textarea class="form-control" id="deletingReasonModal" rows="5"></textarea>
+								</div>
+							</form>
+						</div>
+					</div><!-- /.modal-body -->
+					<div class="module-499">
+							<div class="module-499-wrapper">
+								<input type="submit" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Don't Delete">
+								<input type="submit" role="button" class="module-499-btn right save" value="DELETE">
+							</div><!-- /.module-499-wrapper -->
+						</div><!-- /.module-499 -->
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+
+		<div>
+			<ul class="list-main">
+
+				<li class="first-sidebar">
+					<div class="brand">
+						<img src="content/images/hubitat-logo.svg" alt="Hubitat - Maritime Certification EcoSystem">
+					</div>
+					<div class="first-sidebar-wrapper">
+						<ul class="list-100">
+							<li class="list-100-item">
+								<a href="javascript:void(0);" title="Overview" class="">
+									<span class="hubitat hexagon"></span>
+									<span class="name">Overview</span>
+								</a>
+							</li>
+							<li class="list-100-item">
+								<a href="work-orders.html" title="Work Orders" class="active">
+									<span class="hubitat file-stack"></span>
+									<span class="name">Work Orders</span>
+								</a>
+							</li>
+							<li class="list-100-item">
+								<a href="analytics.html" title="Analytics" class="">
+									<span class="hubitat chart"></span>
+									<span class="name">Analytics</span>
+								</a>
+							</li>
+						</ul><!-- /.list-100 -->
+						<ul class="list-100">
+							<div class="list-100-header">
+								<span class="name">ACCOUNTS</span>
+							</div>
+							<li class="list-100-item">
+								<a href="crew.html" title="Crew" class="">
+									<span class="hubitat crew-2"></span>
+									<span class="name">Crew</span>
+								</a>
+							</li>
+							<li class="list-100-item">
+								<a href="offices.html" title="Offices" class="">
+									<span class="hubitat pin"></span>
+									<span class="name">Offices</span>
+								</a>
+							</li>
+							<li class="list-100-item">
+								<a href="vessels.html" title="Vessels" class="">
+									<span class="hubitat ship"></span>
+									<span class="name">Vessels</span>
+								</a>
+							</li>
+							<li class="list-100-item">
+								<a href="agencies.html" title="Agency" class="">
+									<span class="hubitat handshake"></span>
+									<span class="name">Agencies</span>
+								</a>
+							</li>
+						</ul><!-- /.list-100 -->
+						<ul class="list-100">
+							<div class="list-100-header">
+								<span class="name">FILES</span>
+							</div>
+							<li class="list-100-item tight">
+								<a href="class.html" title="Class" class="">
+									<span class="name">Class</span>
+								</a>
+							</li>
+							<li class="list-100-item tight">
+								<a href="class.html" title="Manufacturer" class="">
+									<span class="name">Manufacturer</span>
+								</a>
+							</li>
+							<li class="list-100-item tight">
+								<a href="class.html" title="Port Authority" class="">
+									<span class="name">Port Authority</span>
+								</a>
+							</li>
+							<li class="list-100-item tight">
+								<a href="class.html" title="Check List" class="">
+									<span class="name">Check List</span>
+								</a>
+							</li>
+							<li class="list-100-item tight">
+								<a href="class.html" title="ISO" class="">
+									<span class="name">ISO</span>
+								</a>
+							</li>
+							<li class="list-100-item tight">
+								<a href="class.html" title="Other" class="">
+									<span class="name">Other</span>
+								</a>
+							</li>
+						</ul><!-- /.list-100 -->
+					</div>
+				</li><!-- /.first-sidebar -->
+
+				<li class="second-sidebar">
+					<div class="second-sidebar-header">
+						<div class="second-sidebar-title">
+							<h3>Work Orders</h3>
+						</div>
+						<div class="second-sidebar-actions">
+							<a class="search" data-toggle="collapse" href="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch"><span class="hubitat magnifier-lg"></span></a>
+							<a href="javascript:void(0)" class="add-item" data-toggle="modal" data-target="#addWorkOrder"><span class="hubitat plus"></span></a>
+						</div>
+
+					</div>
+					<div class="second-sidebar-wrapper">
+						
+						<div class="list-102">
+							<div class="second-sidebar-search collapse" id="collapseSearch">
+								<div class="form-group">
+									<input type="text" class="form-control" id="secondSidebarSearch" aria-describedby="searchHelp" placeholder="Search work order">
+									<span id="searchHelp" class="form-text text-muted">Search terms; Ship Name, Work Order Number, or Office Name</span>
+								</div>
+							</div>
+							<!-- Son eklenen en üstte olacak şekilde sıralanacak -->
+							<a href="work-order-detail.html" class="list-102-item active">
+								<span class="circle"></span>
+								<span class="number">#201612-0124 / Istanbul</span>
+								<span class="name">Lady Saliha</span>
+							</a>
+							<a href="work-order-detail.html" class="list-102-item">
+								<span class="circle"></span>
+								<span class="number">#201612-0123 / Houston</span>
+								<span class="name">Emma Maersk</span>
+							</a>
+							<a href="work-order-detail.html" class="list-102-item unread">
+								<span class="circle"></span>
+								<span class="number">#201612-0122 / Rotterdam</span>
+								<span class="name">CMA CGM Christophe Colomb</span>
+							</a>
+							<a href="work-order-detail.html" class="list-102-item">
+								<span class="circle"></span>
+								<span class="number">#201612-0121 / Rotterdam</span>
+								<span class="name">Hong Kong Express</span>
+							</a>
+							<a href="work-order-detail.html" class="list-102-item">
+								<span class="circle"></span>
+								<span class="number">#201612-0120 / Istanbul</span>
+								<span class="name">Maersk Edmonton</span>
+							</a>
+							<a href="work-order-detail.html" class="list-102-item">
+								<span class="circle"></span>
+								<span class="number">#201612-0119 / Houston</span>
+								<span class="name">Hanjin Harmony</span>
+							</a>
+							<a href="work-order-detail.html" class="list-102-item">
+								<span class="circle"></span>
+								<span class="number">#201612-0118 / Singapore</span>
+								<span class="name">COSCO Hope</span>
+							</a>
+							<a href="work-order-detail.html" class="list-102-item">
+								<span class="circle"></span>
+								<span class="number">#201612-0117 / Istanbul</span>
+								<span class="name">Ain Snan</span>
+							</a>
+							<a href="work-order-detail.html" class="list-102-item">
+								<span class="circle"></span>
+								<span class="number">#201612-0116 / Izmir</span>
+								<span class="name">Unayzah</span>
+							</a>
+							<a href="work-order-detail.html" class="list-102-item">
+								<span class="circle"></span>
+								<span class="number">#201612-0115 / Izmir</span>
+								<span class="name">Hyundai Tenacity</span>
+							</a>
+							<a href="work-order-detail.html" class="list-102-item">
+								<span class="circle"></span>
+								<span class="number">#201612-0124 / Istanbul</span>
+								<span class="name">Lady Saliha</span>
+							</a>
+							<a href="work-order-detail.html" class="list-102-item">
+								<span class="circle"></span>
+								<span class="number">#201612-0123 / Houston</span>
+								<span class="name">Emma Maersk</span>
+							</a>
+							<a href="work-order-detail.html" class="list-102-item">
+								<span class="circle"></span>
+								<span class="number">#201612-0122 / Istanbul</span>
+								<span class="name">CMA CGM Christophe Colomb</span>
+							</a>
+							<a href="work-order-detail.html" class="list-102-item">
+								<span class="circle"></span>
+								<span class="number">#201612-0121 / Istanbul</span>
+								<span class="name">Hong Kong Express</span>
+							</a>
+							<a href="work-order-detail.html" class="list-102-item">
+								<span class="circle"></span>
+								<span class="number">#201612-0120 / Istanbul</span>
+								<span class="name">Maersk Edmonton</span>
+							</a>
+						</div><!-- /.list-102 -->
+					</div>
+				</li><!-- /.second-sidebar -->
+
+				<li class="main-content">
+					<div class="main-content-header">
+						<div class="module-300">
+							<a href="overview.html" title="">Overview</a>
+							<span class="hubitat right-arrow-bold divider"></span>
+							<a href="work-orders.html" title="">Work Orders</a>
+							<span class="hubitat right-arrow-bold divider"></span>
+							<span class="current-page">#201612-0124 / Istanbul</span>
+						</div><!-- /.module-300 -->
+						<div class="module-301 dropdown">
+							<a href="javascript:void(0)" id="profileButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<img src="content/images/profile/sm/sample.png" alt="Ersin Çelik">
+								<span class="name">Ersin Çelik</span>
+								<span class="hubitat down-arrow-bold"></span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right module-301-dropdown" aria-labelledby="profileButton">
+								<div class="info">
+									<img src="content/images/profile/md/sample.png" alt="Ersin Çelik">
+									<span class="name">Ersin Çelik</span>
+									<span class="mail">ers.celik@gmail.com</span>
+								</div>
+								<div class="links">
+									<a href="crew-detail.html" title="Profile Settings">Profile Settings</a>
+									<a href="login.html" title="Sign Out">Sign Out</a>
+								</div>
+							</div>
+						</div><!-- /.module-301 -->
+					</div><!-- /.main-content-header -->
+
+					<div class="main-content-wrapper">
+						<!-- Bu alan [module-605] Admin ve Editör için geçerli olacak -->
+						<div class="module-605">
+							<a  class="module-605-btn" data-toggle="modal" data-target="#assignToCrew" href="javascript:void(0)">Assign to a Crew</a>
+						</div>
+
+						<!-- Bu alan [module-600] sadece Admin için geçerli olacak -->
+						<div class="module-600 md">
+							<table class="table table-bordered">
+								<tbody>
+									<tr>
+										<td>
+											<h5>CREATED ON</h5>
+											<span>December 02, 2016</span>
+										</td>
+										<td>
+											<h5>GRABBED ON</h5>
+											<span>December 09, 2016</span>
+										</td>
+										<td>
+											<h5>PERSON IN CHARGE</h5>
+											<a href="crew-detail.html">Seyfullah Altınkaya</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div><!-- /.module-600 -->
+						
+
+
+						<div class="module md">
+							<div class="module-header dropdown">
+								<h3>#201612-0124 / Istanbul</h3>
+								<a href="javascript:void(0)" id="workOrderSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="hubitat settings" ></span>
+								</a>
+								<div class="dropdown-menu" aria-labelledby="workOrderSettings">
+									<a id="completeWorkOrder" class="dropdown-item" href="javascript:void(0)" onclick="">Complete Work Order</a>
+									<a class="dropdown-item" href="javascript:void(0)" id="editWorkOrder" onclick="">Edit Work Order</a>
+									<a class="dropdown-item" href="javascript:void(0)" id="printWorkOrder" onclick="">Print Work Order</a>
+									<div class="dropdown-divider"></div>
+									<a id="assignToAnotherOffice" class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#changeOffice">Assign to Another Office</a>
+									<a id="assignToAnotherCrew" class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#changeCrew">Assign to Another Crew</a>
+									<div class="dropdown-divider"></div>
+									<a class="dropdown-item danger" href="javascript:void(0)" data-toggle="modal" data-target="#deleteWorkOrder">Delete Work Order</a>
+								</div>
+							</div>
+							<div class="module-content">
+								<div class="container module-401">
+									<div class="content">
+										<form class="row">
+											<div class="form-group col-md-6">
+												<label for="vesselName">Vessel Name</label>
+												<input type="text" class="form-control" id="vesselName" aria-describedby="vesselName" value="Lady Saliha" readonly>
+											</div>
+											<div class="form-group col-md-6">
+												<label for="vesselOwner">Vessel Owner</label>
+												<input type="text" class="form-control" id="vesselOwner" value="Deval Transport" readonly disabled>
+												<small id="vesselOwnerHelp" class="form-text text-muted">Autocompleted area</small>
+											</div>
+											<div class="form-group col-md-6">
+												<label for="arrivalTime">Estimated Time of Arrival</label>
+												<input type="text" class="form-control datePickrWHourStartToday" id="arrivalTime" aria-describedby="arrivalTime" value="2017-03-21 12:00" readonly="readonly">
+											</div>
+											<div class="form-group col-md-6">
+												<label for="deliveryTime">Estimated Time of Delivery</label>
+												<input type="text" class="form-control datePickrWHourStartToday" id="deliveryTime" aria-describedby="deliveryTime" value="2017-03-24 18:12" readonly>
+											</div>
+											<div class="form-group col-md-6">
+												<label for="port">Port</label>
+												<input type="text" class="form-control" id="port" aria-describedby="port" value="Dakar, Senegal" readonly>
+											</div>
+										</form>
+									</div><!-- /.content -->
+								</div><!-- /.module-401 -->
+							</div><!-- /.module-content -->
+						</div><!-- /.module .md -->
+
+						<div class="module md">
+							<div class="module-header">
+								<h3>Certificates</h3>
+							</div>
+							<div class="module-content">
+								<div class="module-402">
+									<div class="content">
+										<table class="table table-bordered table-hover">
+											<thead>
+												<tr>
+													<th scope="row">#</th>
+													<th>CERTIFICATE NAME</th>
+													<th>PERIOD</th>
+													<th scope="row" class="status">STATUS</th>
+													<th scope="row">QTY</th>
+													<th scope="row"><span class="hubitat settings-2"></span></th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr data-id="1">
+													<th scope="row">1</th>
+													<td><a href="javascript:void(0)"  data-toggle="modal" data-target="#certificate">Portable Foam App.</a></td>
+													<td>
+														<select class="form-control custom-select" disabled>
+															<option value="1">1 Year</option>
+															<option value="2">2 Years</option>
+															<option value="3" selected>3 Years</option>
+															<option value="4">4 Years</option>
+															<option value="5">5 Years</option>
+															<option value="6">6 Years</option>
+															<option value="7">7 Years</option>
+															<option value="8">8 Years</option>
+															<option value="9">9 Years</option>
+															<option value="10">10 Years</option>
+														</select>
+													</td>
+													<td scope="row" class="status">-</td>
+													<td scope="row" class="qty">
+														<input class="form-control" type="text" value="12" placeholder="-" readonly>
+													</td>
+													<td scope="action">
+														<a href="javascript:void(0);" data-id="1"><span class="delete hubitat minus-bold"></span></a>
+													</td>
+												</tr>
+												<tr data-id="2">
+													<th scope="row">2</th>
+													<td><a href="javascript:void(0)" data-toggle="modal" data-target="#certificate">Fixed Halon System Cylinder</a></td>
+													<td>
+														<select class="form-control custom-select" disabled>
+															<option value="1">1 Year</option>
+															<option value="2">2 Years</option>
+															<option value="3">3 Years</option>
+															<option value="4">4 Years</option>
+															<option value="5">5 Years</option>
+															<option value="6">6 Years</option>
+															<option value="7">7 Years</option>
+															<option value="8">8 Years</option>
+															<option value="9">9 Years</option>
+															<option value="10" selected>10 Years</option>
+														</select>
+													</td>
+													<td scope="row" class="status success"><span class="hubitat checked"></span></td>
+													<td scope="row" class="qty">
+														<input class="form-control" type="text" value="8" placeholder="-" readonly>
+													</td>
+													<td scope="action">
+														<a href="javascript:void(0);" data-id="2"><span class="delete hubitat minus-bold"></span></a>
+													</td>
+												</tr>
+												<tr data-id="3">
+													<th scope="row">3</th>
+													<td><a href="javascript:void(0)"  data-toggle="modal" data-target="#certificate">Lifebuoy</a></td>
+													<td>
+														<select class="form-control custom-select" disabled>
+															<option value="1" selected>1 Year</option>
+															<option value="2">2 Years</option>
+															<option value="3">3 Years</option>
+															<option value="4">4 Years</option>
+															<option value="5">5 Years</option>
+															<option value="6">6 Years</option>
+															<option value="7">7 Years</option>
+															<option value="8">8 Years</option>
+															<option value="9">9 Years</option>
+															<option value="10">10 Years</option>
+														</select>
+													</td>
+													<td scope="row" class="status deleted"><span class="hubitat cross-circle"></span></td>
+													<td scope="row" class="qty">
+														<input class="form-control" type="text" value="" placeholder="-" readonly>
+													</td>
+													<td scope="action">
+														<a href="javascript:void(0);" data-id="3"><span class="delete hubitat minus-bold"></span></a>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+
+										<div class="module-404">
+											<a data-toggle="collapse" href="#addCertificate" aria-expanded="false" aria-controls="addCertificate"><span class="hubitat plus-bold-solid"></span></a>
+											<div class="collapse" id="addCertificate">
+												<ul class="list-404">
+													<!-- İsme göre sıralanacak a-z -->	
+													<li class="" data-id="1"><a href="javascript:void(0)">Portable Fire Extinguisher</a></li>
+													<li class="" data-id="2"><a href="javascript:void(0)">Fixed Galley System</a></li>
+													<li class="" data-id="3"><a href="javascript:void(0)">Fixed Dry Powder Sys</a></li>
+													<li class="" data-id="4"><a href="javascript:void(0)">Fixed Dry Powder Sys Cylinder</a></li>
+													<li class="" data-id="5"><a href="javascript:void(0)">Fixed Halon System</a></li>
+													<li class="active" data-id="6"><a href="javascript:void(0)">Fixed Halon System Cylinder</a></li>
+													<li class="" data-id="7"><a href="javascript:void(0)">Fixed Foam System</a></li>
+													<li class="" data-id="8"><a href="javascript:void(0)">Fixed High Foam System</a></li>
+													<li class="" data-id="9"><a href="javascript:void(0)">Fixed CO2 System</a></li>
+													<li class="" data-id="10"><a href="javascript:void(0)">Fixed Low Pressure Cos System</a></li>
+													<li class="" data-id="11"><a href="javascript:void(0)">Local Application System</a></li>
+													<li class="active" data-id="12"><a href="javascript:void(0)">Portable Foam App.</a></li>
+													<li class="" data-id="13"><a href="javascript:void(0)">Fire Dedection System</a></li>
+													<li class="" data-id="14"><a href="javascript:void(0)">Smoke Sample</a></li>
+													<li class="" data-id="15"><a href="javascript:void(0)">Fire Hose</a></li>
+													<li class="" data-id="16"><a href="javascript:void(0)">Fire Nozzle</a></li>
+													<li class="" data-id="17"><a href="javascript:void(0)">Fire Blanket</a></li>
+													<li class="" data-id="18"><a href="javascript:void(0)">Fireman Suit</a></li>
+													<li class="" data-id="19"><a href="javascript:void(0)">SCBA</a></li>
+													<li class="" data-id="20"><a href="javascript:void(0)">SCBA Air Cylinder</a></li>
+													<li class="" data-id="21"><a href="javascript:void(0)">EEBD</a></li>
+													<li class="" data-id="22"><a href="javascript:void(0)">EEBD Air Cylinder</a></li>
+													<li class="" data-id="23"><a href="javascript:void(0)">Lifejacket</a></li>
+													<li class="active" data-id="24"><a href="javascript:void(0)">Lifebuoy</a></li>
+													<li class="" data-id="25"><a href="javascript:void(0)">Immersion Suit</a></li>
+													<li class="" data-id="26"><a href="javascript:void(0)">Air Quality</a></li>
+
+													<div class="module-499 tight">
+														<div class="module-499-wrapper">
+															<a href="javascript:void(0);" class="module-499-btn left cancel undoChanges">Undo</a>
+															<a href="javascript:void(0);" class="module-499-btn right save applyChanges">APPLY</a>
+														</div><!-- /.module-499-wrapper -->
+													</div><!-- /.module-499 -->
+													
+												</ul><!-- /.list-404 -->
+											</div><!-- /.collapse -->
+										</div><!-- /.module-404 -->
+
+									</div><!-- /.content -->
+								</div><!-- /.module-402 -->
+							</div><!-- /.module-content -->
+						</div><!-- /.module .md -->
+
+						<div class="module md">
+							<div class="module-header">
+								<h3>Extras</h3>
+							</div>
+							<div class="module-content">
+								<div class="container module-403">
+									<div class="content">
+										<form>
+											<div class="form-group">
+												<label for="equipments">Equipments</label>
+												<textarea class="form-control" id="equipments" rows="4" readonly>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam magna sapien, posuere vel rutrum eu, eleifend quis lectus. Donec auctor augue nec lorem tempor vel porta leo elementum.</textarea>
+												<small id="equipmentsHelp" class="form-text text-muted">If you want inspector to grab some equipments.</small>
+											</div>
+											<div class="form-group">
+												<label for="information">Information</label>
+												<textarea class="form-control" id="information" rows="4" readonly>Maecenas ut sapien ut est facilisis blandit vel ac est.</textarea>
+												<small id="informationHelp" class="form-text text-muted">If necessary, additional information about the work order.</small>
+											</div>
+										</form>
+									</div><!-- /.content -->
+								</div><!-- /.module-403 -->
+							</div><!-- /.module-content -->
+						</div><!-- /.module .md -->
+
+						<div class="module md">
+							<div class="module-header">
+								<h3>Agency</h3>
+								<a href="javascript:void(0)" id="workOrderAgencySettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="hubitat settings" ></span>
+								</a>
+								<div class="dropdown-menu" aria-labelledby="workOrderAgencySettings">
+									<a id="changeAgency" class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#changeWorkOrderAgency">Change Agency</a>
+								</div>
+							</div>
+							<div class="module-content">
+								<div class="container module-406">
+									<div class="content">
+										<div class="list-406">
+											<div class="list-406-item row">
+												<span class="title col-sm-3">Name</span>
+												<span class="value col-sm-9">Angency Name A</span>
+											</div>
+											<div class="list-406-item row">
+												<span class="title col-sm-3">Phone</span>
+												<span class="value col-sm-9">+01 (234) 567 89 01</span>
+											</div>
+											<div class="list-406-item row">
+												<span class="title col-sm-3">Email</span>
+												<span class="value col-sm-9"><a href="mailto:info@domain.com" target="_blank">info@domainname.com</a></span>
+											</div>
+											<div class="list-406-item row">
+												<span class="title col-sm-3">Address</span>
+												<span class="value col-sm-9">2065 Dakota Route Apt. 304 Houston, TX</span>
+											</div>
+											<div class="list-406-item row">
+												<span class="title col-sm-3">Person in Charge</span>
+												<span class="value col-sm-9">Name Surname</span>
+											</div>
+										</div>
+									</div><!-- /.content -->
+								</div><!-- /.module-403 -->
+							</div><!-- /.module-content -->
+						</div><!-- /.module .md -->
+
+						<!-- Only for Admin [module-601] -->
+						<div class="module-601 md">
+							<a data-toggle="collapse" data-parent="#logs" href="#logs" aria-expanded="true" aria-controls="logs">Logs <span class="hubitat down-arrow-bold"></span></a>
+							<div id="logs" class="list-601 collapse" role="tabpanel" aria-labelledby="logs">
+								<p style="padding:24px;">
+									Burada; ilgili work order ile ilgili tüm işlemler loglanacak. Oluşturulma zamanı, grab edilme zamanı, sertifikalarda değişiklik yapma tarihleri, sertifika tamamlanma bilgileri,... gibi
+								</p>
+								<div class="list-601-item">
+									<span class="date">[11/12/2016 - 14:00]</span> Fixed Holon System Cylinder certificate is completed
+								</div>
+								<div class="list-601-item">
+									<span class="date">[11/12/2016 - 13:42]</span> Aenean nec orci nisi. Vivamus ut mauris id nisl fermentum scelerisque eget eu sapien.
+								</div>
+								<div class="list-601-item">
+									<span class="date">[11/12/2016 - 13:36]</span> Maecenas ut sapien ut est facilisis blandit vel ac est. Morbi volutpat urna ut turpis semper eget iaculis nibh dapibus. Aliquam quis nisi et purus eleifend molestie at pharetra nunc.
+								</div>
+								<div class="list-601-item">
+									<span class="date">[11/11/2016 - 18:24]</span> Aliquam erat volutpat. Proin vel justo nulla, a faucibus ligula.
+								</div>
+								<div class="list-601-item">
+									<span class="date">[11/09/2016 - 15:56]</span> Nulla scelerisque metus id felis scelerisque eget congue urna porttitor. Mauris vitae nibh felis.
+								</div>
+								<div class="list-601-item">
+									<span class="date">[11/09/2016 - 15:54]</span> Maecenas at velit felis, vel fermentum lacus. Pellentesque ut ipsum at velit elementum convallis.
+								</div>
+								<div class="list-601-item">
+									<span class="date">[11/09/2016 - 15:48]</span> Aliquam bibendum dolor id sapien venenatis sollicitudin.
+								</div>
+							</div>
+						</div><!-- /.module-601 -->
+
+						
+
+					</div><!-- /.main-content-wrapper -->
+					<div class="module-499">
+						<div class="module-499-wrapper">
+							<input type="submit" role="button" class="module-499-btn left cancel" value="Cancel">
+							<input type="submit" role="button" class="module-499-btn right save" value="SAVE">
+						</div><!-- /.module-499-wrapper -->
+					</div><!-- /.module-499 -->
+				</li><!-- /.main-content -->
+
+			</ul><!-- /.list-main -->
+		</div>
+
+		<!-- Page Scripts -->
+		<script src="dist/js/jquery-2.2.1.min.js"></script>
+		<script src="dist/js/tether/tether.min.js"></script>
+		<script src="dist/js/bootstrap/bootstrap.min.js"></script>
+		<script src="dist/js/jquery.mCustomScrollbar.concat.min.js"></script>
+		<script src="dist/js/flatpickr.min.js"></script>
+		<!--<script src="dist/js/moment.min.js"></script>
+		<script src="dist/js/daterangepicker.js"></script>-->
+		<script src="dist/js/hubitat.js"></script>
+		<script type="text/javascript">
+			
+		</script>
+	</body>
+</html>

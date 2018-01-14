@@ -1,0 +1,107 @@
+<!-- Add Crew Modal - #addCrew -->
+<div class="modal fade" id="addCrew" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<form method="POST" action="<?php echo $this->url(array(), 'CrewAdd'); ?>" enctype="multipart/form-data">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+					</button>
+					<h4>Add New Crew</h4>
+				</div>
+				<div class="modal-body md">
+					<div class="module-400">
+						<div class="image">
+							<img src="content/images/profile/md/empty.png">
+							<a href="javascript:void(0)" onclick="$('#changeProfileImageModal').click();">Change Image</a>
+							<input type="file" class="form-control-file" name="ProfileImage" id="changeProfileImageModal">
+						</div>
+						<div class="content">
+
+								<div class="form-group row">
+									<label for="profileNameModal" class="col-sm-3 col-form-label">Name</label>
+									<div class="col-sm-9">
+										<input class="form-control" name="Name" type="text" value="" id="profileNameModal">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="profileSurnameModal" class="col-sm-3 col-form-label">Surname</label>
+									<div class="col-sm-9">
+										<input class="form-control" name="Surname" type="text" value="" id="profileSurnameModal">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="profileEmailModal" class="col-sm-3 col-form-label">Email</label>
+									<div class="col-sm-9">
+										<input class="form-control" name="Email" type="email" value="" id="profileEmailModal">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="profileOfficeModal" class="col-sm-3 col-form-label">Office</label>
+									<div class="col-sm-9">
+										<select class="form-control custom-select" name="Office"  id="profileOfficeModal">
+										<option value="0">Unassigned</option>
+										<?php if(isset($this->offices) && is_array($this->offices)){ ?>
+											<?php foreach($this->offices as $office){ ?>
+												<?php if($office['_id'] == $this->oCrew['Office']){ ?>
+													<option value="<?php echo $office['_id']; ?>" selected="selected"><?php echo $office['Name']; ?></option>
+												<?php }else{ ?>
+													<option value="<?php echo $office['_id']; ?>"><?php echo $office['Name']; ?></option>
+												<?php } ?>
+											<?php } ?>
+										<?php } ?>
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="profilePhoneModal" class="col-sm-3 col-form-label">Phone</label>
+									<div class="col-sm-9">
+										<input class="form-control" type="tel" value="" id="profilePhoneModal" name="Phone">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="profileGsmModal" class="col-sm-3 col-form-label">GSM</label>
+									<div class="col-sm-9">
+										<input class="form-control" type="tel" value="" id="profileGsmModal" name="GSM">
+									</div>
+								</div>
+
+							<!-- Buradan sonraki kısımları [divider, role, username ve password] eğer kendisi ise veya admin ise görüntüleyebilecek. Diğer kullanıcılar göremeyecek. --> 
+							<div class="divider"></div>
+								<div class="form-group row">
+									<label for="profileRoleModal" class="col-sm-3 col-form-label">Role</label>
+									<div class="col-sm-9">
+										<select class="form-control custom-select" id="profileRoleModal" name="Role">
+											<!-- İsme göre sıralanacak -->
+											<option>Admin</option>
+											<option>Chef</option>
+											<option>User</option>
+										</select>
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="profileUsernameModal" class="col-sm-3 col-form-label">Username</label>
+									<div class="col-sm-9">
+										<input class="form-control" type="text" value="" id="profileUsernameModal" name="Username">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="profilePasswordModal" class="col-sm-3 col-form-label">Password</label>
+									<div class="col-sm-9">
+										<input class="form-control" type="password" id="profilePasswordModal" name="Password">
+									</div>
+								</div>
+						</div><!-- /.content -->
+					</div><!-- /.module-400 -->
+
+				</div><!-- /.modal-body -->
+				<div class="module-499">
+					<div class="module-499-wrapper">
+						<input type="submit" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Cancel">
+						<input type="submit" role="button" class="module-499-btn right save" value="SAVE">
+					</div><!-- /.module-499-wrapper -->
+				</div><!-- /.module-499 -->
+			</div><!-- /.modal-content -->
+		</form>
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

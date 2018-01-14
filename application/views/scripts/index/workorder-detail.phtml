@@ -1,0 +1,443 @@
+<li class="second-sidebar">
+	<div class="second-sidebar-header">
+		<div class="second-sidebar-title">
+			<h3><?php echo $this->moduleTitle; ?></h3>
+		</div>
+		<div class="second-sidebar-actions">
+			<a class="search" data-toggle="collapse" href="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch"><span class="hubitat magnifier-lg"></span></a>
+			<?php if($this->oUser['Role'] == 'Admin'){ ?>
+				<a href="<?php echo $this->url(array(), 'WorkOrderAdd'); ?>" class="add-item"><span class="hubitat plus"></span></a>
+			<?php } ?>
+		</div>
+	</div>
+	<div class="second-sidebar-wrapper">
+		<div class="list-102">
+			<div class="second-sidebar-search collapse" id="collapseSearch">
+				<div class="form-group">
+					<input type="text" class="form-control search" data-target="list-container" id="secondSidebarSearch" aria-describedby="searchHelp" placeholder="Search for <?php echo $this->moduleTitle; ?>">
+					<span id="searchHelp" class="form-text text-muted">Start typing to filter crew results.</span>
+				</div>
+			</div>
+
+			<?php if(isset($this->workOrders)){ ?>
+				<?php foreach($this->workOrders as $listItem){ ?> 
+					<a href="<?php echo $this->url(array('workorderId'=>$listItem['_id']), 'WorkOrder'); ?>" title="Details" class="list-102-item">
+						<span class="number">
+							#<?php echo $listItem['ProjectNo']; ?> / <?php echo $listItem['Vessel']['Port']; ?>
+						</span>
+						<span class="name"><?php echo $this->Content()->getVessel(array('_id'=>new MongoId($listItem['Vessel']['_id'])), 'Name'); ?></span>
+					</a>
+				<?php } ?>
+			<?php } ?>
+		</div>
+	</div>
+</li><!-- /.second-sidebar -->
+
+<li class="main-content">
+	<form name="workorder" method="post" action="<?php echo $this->url(); ?>">
+		<div class="main-content-header">
+			<div class="module-300">
+				<a href="<?php echo $this->url(array(), 'Overview'); ?>" title="Overview">Overview</a>
+				<span class="hubitat right-arrow-bold divider"></span>
+				<a href="<?php echo $this->url(array(), 'WorkOrders'); ?>" title="Work Orders">Work Orders</a>
+				<span class="hubitat right-arrow-bold divider"></span>
+				<span class="current-page">
+					#<?php echo $this->workOrder['ProjectNo']; ?>/ <?php echo $this->workOrder['Vessel']['Port']; ?>
+				</span>
+			</div><!-- /.module-300 -->
+			<?php echo $this->render('partials/user-toolbar.phtml'); ?>
+		</div><!-- /.main-content-header -->
+
+		<!-- Bu alan [module-605] Admin ve Editör için geçerli olacak -->
+		<?php if($this->oUser['Role'] == 'Admin' || $this->oUser['Role'] == 'Chef'){ ?>
+			<div class="module-605">
+				<a  class="module-605-btn" data-toggle="modal" data-target="#assignToCrew" href="javascript:void(0)">Assign to a Crew</a>
+			</div>	
+		<?php } ?>
+
+		<!-- Bu alan [module-600] sadece Admin için geçerli olacak -->
+		<?php if($this->oUser['Role'] == 'Admin'){ ?>
+			<div class="module-600 md">
+				<table class="table table-bordered">
+					<tbody>
+						<tr>
+							<td>
+								<h5>CREATED ON</h5>
+								<span><?php echo date('F d, Y', strtotime($this->workOrder['Meta']['created_on'])); ?></span>
+							</td>
+							<td>
+								<h5>GRABBED ON</h5>
+								<span><?php echo date('F d, Y', strtotime($this->workOrder['Meta']['grabbed_on'])); ?></span>
+							</td>
+							<td>
+								<h5>PERSON IN CHARGE</h5>
+								<?php $crew = $this->Content()->getCrewByParams(array('_id'=>new MongoId($this->workOrder['Crew']))); ?>
+								<a href="<?php echo $this->url(array('crewId'=>$this->workOrder['Crew']), 'Crew'); ?>"><?php echo $crew['Name'].' '.$crew['Surname']; ?></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div><!-- /.module-600 -->
+		<?php } ?>
+
+
+		<div class="module md">
+			<div class="module-header dropdown">
+				<h3>#<?php echo $this->workOrder['ProjectNo']; ?>/ <?php echo $this->workOrder['Vessel']['Port']; ?></h3>
+				<a href="javascript:void(0)" id="workOrderSettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<span class="hubitat settings" ></span>
+				</a>
+				<div class="dropdown-menu" aria-labelledby="workOrderSettings">
+					<a id="completeWorkOrder" class="dropdown-item" href="javascript:void(0)" onclick="">Complete Work Order</a>
+					<a class="dropdown-item" href="javascript:void(0)" id="editWorkOrder" onclick="">Edit Work Order</a>
+					<a class="dropdown-item" href="javascript:void(0)" id="printWorkOrder" onclick="">Print Work Order</a>
+					<div class="dropdown-divider"></div>
+					<a id="assignToAnotherOffice" class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#changeOffice">Assign to Another Office</a>
+					<a id="assignToAnotherCrew" class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#assignToCrew">Assign to Another Crew</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item danger" href="javascript:void(0)" data-toggle="modal" data-target="#deleteWorkOrder">Delete Work Order</a>
+				</div>
+			</div>
+			<div class="module-content">
+				<div class="container module-401">
+					<div class="content">
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label for="vesselName">Vessel Name</label>
+								<select name="Vessel" class="form-control select2 vesselSelect" required>
+									<option value="">Select Vessel</option>
+									<?php if(isset($this->vesselList)){ ?>
+										<?php foreach($this->vesselList as $vessel){ ?>
+											<?php $selected = ($vessel['_id'] == $this->workOrder['Vessel']['_id'] ? "selected" : ""); ?>
+											<option value="<?php echo $vessel['_id']; ?>" <?php echo $selected; ?>><?php echo $vessel['Name']; ?></option>
+										<?php } ?>
+									<?php } ?>
+								</select>
+							</div>
+							<div class="form-group col-md-6">
+								<label for="vesselOwner">Vessel Owner</label>
+								<input type="text" class="form-control" id="vesselOwner" value="<?php echo $this->vessel['Owner']; ?>" name="Owner" />
+							</div>
+							<div class="form-group col-md-6">
+								<label for="arrivalTime">Estimated Time of Arrival</label>
+								<input type="text" class="form-control datePickrWHourStartToday" id="arrivalTime" aria-describedby="arrivalTime" value="<?php echo $this->workOrder['Vessel']['EstimatedArrival']; ?>" name="EstimatedArrival" />
+							</div>
+							<div class="form-group col-md-6">
+								<label for="deliveryTime">Estimated Time of Delivery</label>
+								<input type="text" class="form-control datePickrWHourStartToday" id="deliveryTime" aria-describedby="deliveryTime" value="<?php echo $this->workOrder['Vessel']['EstimatedDeliver']; ?>" name="EstimatedDeliver" />
+							</div>
+							<div class="form-group col-md-6">
+								<label for="port">Port</label>
+								<input type="text" class="form-control" id="port" aria-describedby="port" name="Port" value="<?php echo $this->workOrder['Vessel']['Port']; ?>" />
+							</div>
+							<div class="form-group col-md-6">
+								<label for="po">Customer PO</label>
+								<input type="text" class="form-control" id="po" aria-describedby="port" name="customerpo" value="<?php echo $this->workOrder['Vessel']['CustomerPO']; ?>" />
+							</div>
+						</div>
+					</div><!-- /.content -->
+				</div><!-- /.module-401 -->
+			</div><!-- /.module-content -->
+		</div><!-- /.module .md -->	
+
+		<div class="module md">
+			<div class="module-header">
+				<h3>Certificates</h3>
+			</div>
+			<div class="module-content">
+				<div class="module-402">
+					<div class="content">
+						<table class="table table-bordered table-hover">
+							<thead>
+								<tr>
+									<th scope="row">#</th>
+									<th>CERTIFICATE NAME</th>
+									<th>PERIOD</th>
+									<th scope="row" class="status">STATUS</th>
+									<th scope="row">QTY</th>
+									<th scope="row"><span class="hubitat settings-2"></span></th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php if(array_key_exists("Certificates", $this->workOrder)){ ?>
+									<?php foreach($this->workOrder["Certificates"] as $certificate){ ?>
+										<tr data-id="1">
+											<th scope="row">1</th>
+											<td><a href="javascript:void(0)"  data-toggle="modal" data-target="#certificate">Portable Foam App.</a></td>
+											<td>
+												<select class="form-control custom-select" disabled>
+													<option value="1">1 Year</option>
+													<option value="2">2 Years</option>
+													<option value="3" selected>3 Years</option>
+													<option value="4">4 Years</option>
+													<option value="5">5 Years</option>
+													<option value="6">6 Years</option>
+													<option value="7">7 Years</option>
+													<option value="8">8 Years</option>
+													<option value="9">9 Years</option>
+													<option value="10">10 Years</option>
+												</select>
+											</td>
+											<td scope="row" class="status">-</td>
+											<td scope="row" class="qty">
+												<input class="form-control" type="text" value="12" placeholder="-" readonly>
+											</td>
+											<td scope="action">
+												<a href="javascript:void(0);" data-id="1"><span class="delete hubitat minus-bold"></span></a>
+											</td>
+										</tr>
+									<?php } ?>
+								<?php } ?>
+							</tbody>
+						</table>
+
+						<div class="module-404">
+							<a data-toggle="collapse" href="#addCertificate" aria-expanded="false" aria-controls="addCertificate"><span class="hubitat plus-bold-solid"></span></a>
+							<div class="collapse" id="addCertificate">
+								<ul class="list-404">
+									<?php if(isset($this->CertificateList)){ ?>
+										<script>
+											var certificate_list = <?php echo json_encode($this->CertificateList); ?>;
+										</script>
+										<?php $i = 0; foreach($this->CertificateList as $certificate){ ?>
+											<li class="cert_selector" data-id="<?php echo $i; ?>"><a href="javascript:void(0)"><?php if($i < 33){ ?>*<?php } ?><?php echo $certificate["name"]; ?></a></li>
+										<?php $i++; } ?>
+									<?php } ?>
+
+									<div class="module-499 tight">
+										<div class="module-499-wrapper">
+											<a href="javascript:void(0);" class="module-499-btn left cancel undoChanges">Undo</a>
+											<a href="javascript:void(0);" class="module-499-btn right save applyChanges">APPLY</a>
+										</div><!-- /.module-499-wrapper -->
+									</div><!-- /.module-499 -->
+									
+								</ul><!-- /.list-404 -->
+							</div><!-- /.collapse -->
+						</div><!-- /.module-404 -->
+
+					</div><!-- /.content -->
+				</div><!-- /.module-402 -->
+			</div><!-- /.module-content -->
+		</div><!-- /.module .md -->
+
+
+		<div class="module md">
+			<div class="module-header">
+				<h3>Extras</h3>
+			</div>
+			<div class="module-content">
+				<div class="container module-403">
+					<div class="content">
+						<div class="form-group">
+							<label for="equipments">Equipments</label>
+							<textarea class="form-control" id="equipments" rows="4" name="Equipments"><?php echo $this->workOrder['Extras']['Equipments']; ?></textarea>
+							<small id="equipmentsHelp" class="form-text text-muted">If you want inspector to grab some equipments.</small>
+						</div>
+						<div class="form-group">
+							<label for="information">Information</label>
+							<textarea class="form-control" id="information" name="Information" rows="4"><?php echo $this->workOrder['Extras']['Information']; ?></textarea>
+							<small id="informationHelp" class="form-text text-muted">If necessary, additional information about the work order.</small>
+						</div>
+					</div><!-- /.content -->
+				</div><!-- /.module-403 -->
+			</div><!-- /.module-content -->
+		</div><!-- /.module .md -->
+
+		<div class="module md">
+			<div class="module-header">
+				<h3>Agency</h3>
+				<a href="javascript:void(0)" id="workOrderAgencySettings" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="display: inline-block;">
+					<span class="hubitat settings"></span>
+				</a>
+				<div class="dropdown-menu" aria-labelledby="workOrderAgencySettings">
+					<a id="changeAgency" class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#changeWorkOrderAgency">Change Agency</a>
+				</div>
+			</div>
+			<div class="module-content">
+				<div class="container module-406">
+					<div class="content">
+						<div class="list-406">
+							<div class="list-406-item row">
+								<span class="title col-sm-3">Name</span>
+								<span class="value col-sm-9"><?php echo $this->agency['Name']; ?></span>
+							</div>
+							<div class="list-406-item row">
+								<span class="title col-sm-3">Phone</span>
+								<span class="value col-sm-9"><?php echo $this->agency['Phone']; ?></span>
+							</div>
+							<div class="list-406-item row">
+								<span class="title col-sm-3">Email</span>
+								<span class="value col-sm-9"><a href="mailto:<?php echo $this->agency['Email']; ?>" target="_blank"><?php echo $this->agency['Email']; ?></a></span>
+							</div>
+							<div class="list-406-item row">
+								<span class="title col-sm-3">Address</span>
+								<span class="value col-sm-9"><?php echo $this->agency['Address']; ?></span>
+							</div>
+							<div class="list-406-item row">
+								<span class="title col-sm-3">Person in Charge</span>
+								<span class="value col-sm-9"><?php echo $this->agency['Person']; ?></span>
+							</div>
+						</div>
+					</div><!-- /.content -->
+				</div><!-- /.module-403 -->
+			</div><!-- /.module-content -->
+		</div><!-- /.module .md -->
+
+		<?php if($this->oUser['Role'] == 'Admin'){ ?>
+			<!-- Only for Admin [module-601] -->
+			<div class="module-601 md">
+				<a data-toggle="collapse" data-parent="#logs" href="#logs" aria-expanded="true" aria-controls="logs">Logs <span class="hubitat down-arrow-bold"></span></a>
+				<div id="logs" class="list-601 collapse" role="tabpanel" aria-labelledby="logs">
+					<?php foreach($this->workOrder['Logs'] as $log){ ?>
+					<div class="list-601-item">
+						<span class="date">[<?php echo $log['Person']; ?> - <?php echo $log['created_on']; ?>]</span> <?php echo $log['Event'] ;?><br />
+					</div>
+					<?php } ?>
+				</div>
+			</div><!-- /.module-601 -->
+		<?php } ?>
+
+		<div class="module-499">
+			<div class="module-499-wrapper">
+				<input type="cancel" role="button" class="module-499-btn left cancel" value="Cancel">
+				<input type="submit" role="button" class="module-499-btn right save" value="SAVE">
+			</div><!-- /.module-499-wrapper -->
+		</div><!-- /.module-499 -->
+	</form>
+</li><!-- /.main-content -->
+
+<!-- Assign that work order to a crew - #assignToCrew-->
+<div class="modal fade" id="assignToCrew" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<form name="updateworkorder" method="post" action="<?php echo $this->url(array('workorderId'=>$this->workOrder['_id']), 'WorkOrderPartialUpdate'); ?>" class="ajax-form">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+						<!-- &#x2715; -->
+					</button>
+					<h4>Assign the Work Order to a Crew</h4>
+					<p class="text-muted">#<?php echo $this->workOrder['ProjectNo']; ?>/ <?php echo $this->workOrder['Vessel']['Port']; ?></p>
+				</div>
+				<div class="modal-body xs">
+					<div class="module-604">
+						<div class="custom-controls-stacked">
+							<?php $i=1; foreach($this->oCrews as $crew){ ?>
+								<label class="custom-control custom-radio">
+									<?php if($this->workOrder['Crew'] == $crew['_id']){ ?>
+										<input id="crewName<?php echo $i; ?>" name="Crew" type="radio" class="custom-control-input" value="<?php echo $crew['_id']; ?>" checked>
+									<?php }else{ ?>
+										<input id="crewName<?php echo $i; ?>" name="Crew" type="radio" class="custom-control-input" value="<?php echo $crew['_id']; ?>">
+									<?php } ?>
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description"><?php echo $crew['Name'].' '.$crew['Surname']; ?></span>
+								</label>
+							<?php $i++; } ?>
+						</div><!-- /.custom-controls-stacked -->
+					</div><!-- /.module-604 -->
+
+				</div><!-- /.modal-body -->
+
+				<div class="module-499">
+					<div class="module-499-wrapper">
+						<input type="cancel" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Cancel">
+						<input type="submit" role="button" class="module-499-btn right save" value="ASSIGN">
+					</div><!-- /.module-499-wrapper -->
+				</div><!-- /.module-499 -->
+			</div><!-- /.modal-content -->
+		</form>
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- Assign that work order to another office - #changeOffice-->
+<div class="modal fade" id="changeOffice" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<form name="updateworkorder" method="post" action="<?php echo $this->url(array('workorderId'=>$this->workOrder['_id']), 'WorkOrderPartialUpdate'); ?>" class="ajax-form">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+						<!-- &#x2715; -->
+					</button>
+					<h4>Assign the Work Order to Another Office</h4>
+					<p class="text-muted">#<?php echo $this->workOrder['ProjectNo']; ?>/ <?php echo $this->workOrder['Vessel']['Port']; ?></p>
+				</div>
+				<div class="modal-body xs">
+					<div class="module-604">
+						<div class="custom-controls-stacked">
+							<?php $i=1; foreach($this->oOffices as $office){ ?>
+								<label class="custom-control custom-radio">
+									<?php if($office['_id'] == $this->workOrder['Office']){ ?>
+										<input id="officeName1" value="<?php echo $office['_id']; ?>" name="Office" type="radio" class="custom-control-input" checked>
+									<?php }else{ ?>
+										<input id="officeName1" value="<?php echo $office['_id']; ?>" name="Office" type="radio" class="custom-control-input">
+									<?php } ?>
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description"><?php echo $office['Name']; ?></span>
+								</label>
+							<?php } ?>
+						</div><!-- /.custom-controls-stacked -->
+					</div><!-- /.module-604 -->
+				</div><!-- /.modal-body -->
+
+				<div class="module-499">
+					<div class="module-499-wrapper">
+						<input type="submit" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Don't Change">
+						<input type="submit" role="button" class="module-499-btn right save" value="CHANGE">
+					</div><!-- /.module-499-wrapper -->
+				</div><!-- /.module-499 -->
+			</div><!-- /.modal-content -->
+		</form>
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="changeWorkOrderAgency" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<form name="updateworkorder" method="post" action="<?php echo $this->url(array('workorderId'=>$this->workOrder['_id']), 'WorkOrderPartialUpdate'); ?>" class="ajax-form">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+						<!-- &#x2715; -->
+					</button>
+					<h4>Change Agency</h4>
+					<p class="text-muted">#<?php echo $this->workOrder['ProjectNo']; ?>/ <?php echo $this->workOrder['Vessel']['Port']; ?></p>
+				</div>
+				<div class="modal-body xs">
+					<div class="module-604">
+						<div class="custom-controls-stacked">
+							<?php $i=1; foreach($this->agencyList as $agency){ ?>
+								<label class="custom-control custom-radio">
+									<?php if($agency['_id'] == $this->workOrder['Agency']){ ?>
+										<input id="officeName1" value="<?php echo $agency['_id']; ?>" name="Agency" type="radio" class="custom-control-input" checked="checked">
+									<?php }else{ ?>
+										<input id="officeName1"  value="<?php echo $agency['_id']; ?>" name="Agency" type="radio" class="custom-control-input">
+									<?php } ?>
+									<span class="custom-control-indicator"></span>
+									<span class="custom-control-description"><?php echo $agency['Name']; ?></span>
+								</label>
+							<?php } ?>
+						</div><!-- /.custom-controls-stacked -->
+					</div><!-- /.module-604 -->
+
+				</div><!-- /.modal-body -->
+
+				<div class="module-499">
+						<div class="module-499-wrapper">
+							<input type="cancel" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Don't Change">
+							<input type="submit" role="button" class="module-499-btn right save" value="CHANGE">
+						</div><!-- /.module-499-wrapper -->
+					</div><!-- /.module-499 -->
+			</div><!-- /.modal-content -->
+		</form>
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+	var vesselList = <?php echo json_encode($this->vesselList); ?>;
+	$(document).ready(function(){
+		setTimeout(function(){
+			$('#editWorkOrder').trigger('click');
+		}, 400);
+	});
+</script>

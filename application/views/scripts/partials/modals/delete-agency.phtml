@@ -1,0 +1,30 @@
+<!-- Deleting Confirmation Modal - #deleteOffice -->
+<div class="modal fade" id="deleteAgency" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+				</button>
+				<h4>Delete Agency</h4>
+				<p class="text-muted"><?php echo $this->oAgency['Name']; ?></p>
+			</div>
+			<div class="modal-body xs">
+				<div class="module-405">
+					<p>
+						You are about to delete an agency profile.
+						<br><strong>It cannot be undone.</strong>
+					</p>
+				</div>
+			</div><!-- /.modal-body -->
+			<div class="module-499">
+					<div class="module-499-wrapper">
+						<form method="GET" action="<?php echo $this->url(array('agencyId'=>$this->oAgency['_id']), 'AgencyDelete'); ?>">
+							<input type="button" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Don't Delete">
+							<input type="submit" role="button" class="module-499-btn right save" value="DELETE">
+						</form>
+					</div><!-- /.module-499-wrapper -->
+				</div><!-- /.module-499 -->
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

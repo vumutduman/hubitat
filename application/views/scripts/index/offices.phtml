@@ -1,0 +1,46 @@
+<?php echo $this->render('partials/modals/add-office.phtml'); ?>
+<?php echo $this->render('partials/modals/add-crew.phtml'); ?>
+
+<li class="second-sidebar">
+	<div class="second-sidebar-header">
+		<div class="second-sidebar-title">
+			<h3><?php echo $this->moduleTitle; ?></h3>
+		</div>
+		<div class="second-sidebar-actions">
+			<a class="search" data-toggle="collapse" href="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch"><span class="hubitat magnifier-lg"></span></a>
+			<?php if($this->oUser['Role'] == 'Admin'){ ?>
+				<a href="javascript:void(0)" class="add-item" data-toggle="modal" data-target="#addOffice"><span class="hubitat plus"></span></a>
+			<?php } ?>
+		</div>
+	</div>
+	<div class="second-sidebar-wrapper">
+		<div class="list-101">
+			<div class="second-sidebar-search collapse" id="collapseSearch">
+				<div class="form-group">
+					<input type="text" class="form-control search" data-target="list-container" id="secondSidebarSearch" aria-describedby="searchHelp" placeholder="Search for <?php echo $this->moduleTitle; ?>">
+					<span id="searchHelp" class="form-text text-muted">Start typing to filter office results.</span>
+				</div>
+			</div>
+
+			<!-- İsme göre sıralanacak -->
+			<div class="list-container">
+				<?php if(isset($this->oOfficeList)){ ?>
+					<?php foreach($this->oOfficeList as $listItem){ ?> 
+						<a href="<?php echo $this->url(array('officeId'=>$listItem['_id']), 'Office'); ?>" title="Details" class="list-101-item"><?php echo $listItem['Name']; ?></a>
+					<?php } ?>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+</li><!-- /.second-sidebar -->
+
+<li class="main-content ">
+	<div class="main-content-header">
+		<div class="module-300">
+			<a href="<?php echo $this->url(array(), 'Overview'); ?>" title="Overview">Overview</a>
+			<span class="hubitat right-arrow-bold divider"></span>
+			<span class="current-page">Offices</span>
+		</div><!-- /.module-300 -->
+		<?php echo $this->render('partials/user-toolbar.phtml'); ?>
+	</div><!-- /.main-content-header -->
+</li><!-- /.main-content -->

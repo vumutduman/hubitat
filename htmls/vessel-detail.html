@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Lady Saliha - Vessels - Hubitat</title>
+
+		<link rel="stylesheet" type="text/css" href="dist/css/bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="dist/css/jquery.mCustomScrollbar.css">
+		<link rel="stylesheet" type="text/css" href="dist/css/hubitat-font.css">
+		<link rel="stylesheet" type="text/css" href="dist/css/main.css">
+		<link rel="icon" type="image/png" href="content/images/favicon.png" />
+		<!-- for iOS devices -->
+		<meta name="apple-mobile-web-app-title" content="Hubitat" />
+		<link rel="apple-touch-icon-precomposed" href="content/images/apple-touch-icon.png" />
+	</head>
+
+	<body>
+		<!-- Deleting Confirmation Modal - #deleteVessel -->
+		<div class="modal fade" id="deleteVessel" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+						</button>
+						<h4>Delete Vessel</h4>
+						<p class="text-muted">Lady Saliha</p>
+					</div>
+					<div class="modal-body xs">
+						<div class="module-405">
+							<p>
+								You are about to delete a vessel profile.
+								<br><strong>It cannot be undone.</strong>
+							</p>
+						</div>
+					</div><!-- /.modal-body -->
+					<div class="module-499">
+							<div class="module-499-wrapper">
+								<input type="submit" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Don't Delete">
+								<input type="submit" role="button" class="module-499-btn right save" value="DELETE">
+							</div><!-- /.module-499-wrapper -->
+						</div><!-- /.module-499 -->
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+		<!-- Add Vessel Modal - #addVessel -->
+		<div class="modal fade" id="addVessel" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+						</button>
+						<h4>Add New Vessel</h4>
+					</div>
+					<div class="modal-body md">
+						<div class="module-400">
+							<div class="image">
+								<img src="content/images/profile/md/empty.png">
+								<a href="javascript:void(0)" onclick="$('#changeVesselImageModal').click();">Change Image</a>
+								<input type="file" class="form-control-file" id="changeVesselImageModal">
+							</div>
+							<div class="content">
+
+								<form>
+									<div class="form-group row">
+										<label for="vesselNameModal" class="col-sm-3 col-form-label">Name</label>
+										<div class="col-sm-9">
+											<input class="form-control" type="text" value="" id="vesselNameModal">
+										</div>
+									</div>
+									<div class="form-group row">
+										<label for="vesselPhoneModal" class="col-sm-3 col-form-label">Phone</label>
+										<div class="col-sm-9">
+											<input class="form-control" type="tel" value="" id="vesselPhoneModal">
+										</div>
+									</div>
+									<div class="form-group row">
+										<label for="vesselOwnerModal" class="col-sm-3 col-form-label">Owner</label>
+										<div class="col-sm-9">
+											<input class="form-control" type="text" value="" id="vesselOwnerModal">
+										</div>
+									</div>
+									<div class="divider"></div>
+									<div class="form-group row">
+										<label for="vesselFlagModal" class="col-sm-3 col-form-label">Flag</label>
+										<div class="col-sm-9">
+											<input class="form-control" type="text" value="" id="vesselFlagModal">
+										</div>
+									</div>
+									<div class="form-group row">
+										<label for="vesselIMONumberModal" class="col-sm-3 col-form-label">IMO</label>
+										<div class="col-sm-9">
+											<input class="form-control" type="text" value="" id="vesselIMONumberModal">
+										</div>
+									</div>
+									<div class="form-group row">
+										<label for="vesselClassModal" class="col-sm-3 col-form-label">Class</label>
+										<div class="col-sm-9">
+											<input class="form-control" type="text" value="" id="vesselClassModal">
+										</div>
+									</div>
+								</form>
+
+							</div><!-- /.content -->
+						</div><!-- /.module-400 -->
+
+					</div><!-- /.modal-body -->
+					<div class="module-499">
+							<div class="module-499-wrapper">
+								<input type="submit" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Cancel">
+								<input type="submit" role="button" class="module-499-btn right save" value="SAVE">
+							</div><!-- /.module-499-wrapper -->
+						</div><!-- /.module-499 -->
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+		<div>
+			<ul class="list-main">
+
+				<li class="first-sidebar">
+					<div class="brand">
+						<img src="content/images/hubitat-logo.svg" alt="Hubitat - Maritime Certification EcoSystem">
+					</div>
+					<div class="first-sidebar-wrapper">
+						<ul class="list-100">
+							<li class="list-100-item">
+								<a href="javascript:void(0);" title="Overview" class="">
+									<span class="hubitat hexagon"></span>
+									<span class="name">Overview</span>
+								</a>
+							</li>
+							<li class="list-100-item">
+								<a href="work-orders.html" title="Work Orders" class="">
+									<span class="hubitat file-stack"></span>
+									<span class="name">Work Orders</span>
+								</a>
+							</li>
+							<li class="list-100-item">
+								<a href="analytics.html" title="Analytics" class="">
+									<span class="hubitat chart"></span>
+									<span class="name">Analytics</span>
+								</a>
+							</li>
+						</ul><!-- /.list-100 -->
+						<ul class="list-100">
+							<div class="list-100-header">
+								<span class="name">ACCOUNTS</span>
+							</div>
+							<li class="list-100-item">
+								<a href="crew.html" title="Crew" class="">
+									<span class="hubitat crew-2"></span>
+									<span class="name">Crew</span>
+								</a>
+							</li>
+							<li class="list-100-item">
+								<a href="offices.html" title="Offices" class="">
+									<span class="hubitat pin"></span>
+									<span class="name">Offices</span>
+								</a>
+							</li>
+							<li class="list-100-item">
+								<a href="vessels.html" title="Vessels" class="active">
+									<span class="hubitat ship"></span>
+									<span class="name">Vessels</span>
+								</a>
+							</li>
+							<li class="list-100-item">
+								<a href="agencies.html" title="Agency" class="">
+									<span class="hubitat handshake"></span>
+									<span class="name">Agencies</span>
+								</a>
+							</li>
+						</ul><!-- /.list-100 -->
+						<ul class="list-100">
+							<div class="list-100-header">
+								<span class="name">FILES</span>
+							</div>
+							<li class="list-100-item tight">
+								<a href="class.html" title="Class" class="">
+									<span class="name">Class</span>
+								</a>
+							</li>
+							<li class="list-100-item tight">
+								<a href="class.html" title="Manufacturer" class="">
+									<span class="name">Manufacturer</span>
+								</a>
+							</li>
+							<li class="list-100-item tight">
+								<a href="class.html" title="Port Authority" class="">
+									<span class="name">Port Authority</span>
+								</a>
+							</li>
+							<li class="list-100-item tight">
+								<a href="class.html" title="Check List" class="">
+									<span class="name">Check List</span>
+								</a>
+							</li>
+							<li class="list-100-item tight">
+								<a href="class.html" title="ISO" class="">
+									<span class="name">ISO</span>
+								</a>
+							</li>
+							<li class="list-100-item tight">
+								<a href="class.html" title="Other" class="">
+									<span class="name">Other</span>
+								</a>
+							</li>
+						</ul><!-- /.list-100 -->
+					</div>
+				</li><!-- /.first-sidebar -->
+
+				<li class="second-sidebar">
+					<div class="second-sidebar-header">
+						<div class="second-sidebar-title">
+							<h3>Vessels</h3>
+						</div>
+
+						<!-- Sadece Admin ekle butonunu görebilecek -->
+						<div class="second-sidebar-actions">
+							<a class="search" data-toggle="collapse" href="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch"><span class="hubitat magnifier-lg"></span></a>
+							<a href="javascript:void(0)" class="add-item" data-toggle="modal" data-target="#addVessel"><span class="hubitat plus"></span></a>
+						</div>
+					</div>
+					<div class="second-sidebar-wrapper">
+						<div class="list-101">
+							<div class="second-sidebar-search collapse" id="collapseSearch">
+								<div class="form-group">
+									<input type="text" class="form-control" id="secondSidebarSearch" aria-describedby="searchHelp" placeholder="Search vessel">
+									<span id="searchHelp" class="form-text text-muted">Search terms; Ship Name or Owner Name</span>
+								</div>
+							</div>
+							<a href="vessel-detail.html" title="" class="list-101-item active">Lady Saliha</a>
+							<a href="vessel-detail.html" title="" class="list-101-item">Frisia Goteborg</a>
+							<a href="vessel-detail.html" title="" class="list-101-item">Hansa Neuburg</a>
+							<a href="vessel-detail.html" title="" class="list-101-item">Avrasya</a>
+							<a href="vessel-detail.html" title="" class="list-101-item">Gladiator</a>
+							<a href="vessel-detail.html" title="" class="list-101-item">Volgo Balt 206</a>
+							<a href="vessel-detail.html" title="" class="list-101-item">Gemini Gas</a>
+							<a href="vessel-detail.html" title="" class="list-101-item">Najran</a>
+							<a href="vessel-detail.html" title="" class="list-101-item">Frisia Goteborg</a>
+							<a href="vessel-detail.html" title="" class="list-101-item">Hansa Neuburg</a>
+							<a href="vessel-detail.html" title="" class="list-101-item">Avrasya</a>
+							<a href="vessel-detail.html" title="" class="list-101-item">Gladiator</a>
+							<a href="vessel-detail.html" title="" class="list-101-item">Volgo Balt 206</a>
+							<a href="vessel-detail.html" title="" class="list-101-item">Gemini Gas</a>
+							<a href="vessel-detail.html" title="" class="list-101-item">Najran</a>
+						</div>
+					</div>
+				</li><!-- /.second-sidebar -->
+
+				<li class="main-content">
+					<div class="main-content-header">
+						<div class="module-300">
+							<a href="overview.html" title="">Overview</a>
+							<span class="hubitat right-arrow-bold divider"></span>
+							<a href="vessels.html" title="">Vessels</a>
+							<span class="hubitat right-arrow-bold divider"></span>
+							<span class="current-page">Lady Saliha</span>
+						</div><!-- /.module-300 -->
+						<div class="module-301 dropdown">
+							<a href="javascript:void(0)" id="profileButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<img src="content/images/profile/sm/sample.png" alt="Ersin Çelik">
+								<span class="name">Ersin Çelik</span>
+								<span class="hubitat down-arrow-bold"></span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right module-301-dropdown" aria-labelledby="profileButton">
+								<div class="info">
+									<img src="content/images/profile/md/sample.png" alt="Ersin Çelik">
+									<span class="name">Ersin Çelik</span>
+									<span class="mail">ers.celik@gmail.com</span>
+								</div>
+								<div class="links">
+									<a href="crew-detail.html" title="Profile Settings">Profile Settings</a>
+									<a href="login.html" title="Sign Out">Sign Out</a>
+								</div>
+							</div>
+						</div><!-- /.module-301 -->
+					</div><!-- /.main-content-header -->
+
+					<div class="main-content-wrapper">
+						<div class="module md">
+							<div class="module-header dropdown">
+								<h3>Vessel</h3>
+								<a href="javascript:void(0)" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="hubitat settings" ></span>
+								</a>
+								<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+									<a class="dropdown-item danger" href="javascript:void(0)" data-toggle="modal" data-target="#deleteVessel">Delete Vessel</a>
+								</div>
+							</div>
+							<div class="module-content">
+								<div class="module-400">
+									<div class="image">
+										<img src="content/images/profile/md/empty.png">
+										<a href="javascript:void(0)" onclick="$('#changeVesselImage').click();">Change Image</a>
+										<input type="file" class="form-control-file" id="changeVesselImage">
+									</div>
+									<div class="content">
+
+										<form>
+											<div class="form-group row">
+												<label for="vesselName" class="col-sm-3 col-form-label">Name</label>
+												<div class="col-sm-9">
+													<input class="form-control" type="text" value="Lady Saliha" id="vesselName">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="vesselPhone" class="col-sm-3 col-form-label">Phone</label>
+												<div class="col-sm-9">
+													<input class="form-control" type="tel" value="+01 (234) 567 89 01" id="vesselPhone">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="vesselOwner" class="col-sm-3 col-form-label">Owner</label>
+												<div class="col-sm-9">
+													<input class="form-control" type="text" value="Deval Transport" id="vesselOwner">
+												</div>
+											</div>
+											<div class="divider"></div>
+											<div class="form-group row">
+												<label for="vesselFlag" class="col-sm-3 col-form-label">Flag</label>
+												<div class="col-sm-9">
+													<input class="form-control" type="text" value="Norway" id="vesselFlag">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="vesselIMONumber" class="col-sm-3 col-form-label">IMO</label>
+												<div class="col-sm-9">
+													<input class="form-control" type="text" value="9074729" id="vesselIMONumber">
+												</div>
+											</div>
+											<div class="form-group row">
+												<label for="vesselClass" class="col-sm-3 col-form-label">Class</label>
+												<div class="col-sm-9">
+													<input class="form-control" type="text" value="Cargo" id="vesselClass">
+												</div>
+											</div>
+										</form>
+
+									</div><!-- /.content -->
+								</div><!-- /.module-400 -->
+							</div><!-- /.module-content -->
+						</div><!-- /.module .md -->
+
+					</div><!-- /.main-content-wrapper -->
+
+					<div class="module-499">
+						<div class="module-499-wrapper">
+							<input type="submit" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Cancel">
+							<input type="submit" role="button" class="module-499-btn right save" value="SAVE">
+						</div><!-- /.module-499-wrapper -->
+					</div><!-- /.module-499 -->
+
+				</li><!-- /.main-content -->
+
+			</ul><!-- /.list-main -->
+		</div>
+
+		<!-- Page Scripts -->
+		<script src="dist/js/jquery-2.2.1.min.js"></script>
+		<script src="dist/js/bootstrap/bootstrap.min.js"></script>
+		<script src="dist/js/jquery.mCustomScrollbar.concat.min.js"></script>
+		<script src="dist/js/hubitat.js"></script>
+	</body>
+</html>

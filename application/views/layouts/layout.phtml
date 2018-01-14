@@ -1,0 +1,48 @@
+<html lang="en" ng-app="hubitatApp">
+ <head>
+	<base href="<?php echo $this->Assets()->baseUrl(); ?>"/>	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<?php echo $this->headTitle(); ?>
+	<meta name="viewport" content="width=device-width, user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="dist/css/bootstrap/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="dist/css/jquery.mCustomScrollbar.css">
+	<link rel="stylesheet" type="text/css" href="dist/css/flatpickr.min.css">
+	<link rel="stylesheet" type="text/css" href="dist/css/airbnb.css">
+	<link rel="stylesheet" type="text/css" href="dist/css/select2.min.css">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="dist/css/hubitat-font.css">
+	<link rel="stylesheet" type="text/css" href="dist/css/main.css">
+	<link rel="icon" type="image/png" href="content/images/favicon.png" />
+	<!-- for iOS devices -->
+	<meta name="apple-mobile-web-app-title" content="Hubitat" />
+	<link rel="apple-touch-icon-precomposed" href="content/images/apple-touch-icon.png" />
+	<!-- for iOS devices -->
+	<meta name="apple-mobile-web-app-title" content="Hubitat" />
+	<link rel="apple-touch-icon-precomposed" href="content/images/apple-touch-icon.png" />
+
+	<META name="robots" content="noindex, nofollow">
+	<script type="text/javascript">
+		var config = {
+			'baseURL': '<?php echo $this->Assets()->baseUrl(); ?>'
+		};
+	</script>
+	<script src="dist/js/jquery-2.2.1.min.js"></script>
+</head>
+<body>
+	<?php echo $this->render('partials/left-menu.phtml'); ?>
+	<?php echo $this->layout()->content; ?>
+	</ul><!-- /.list-main -->
+	</div>
+
+		<!-- Page Scripts -->
+		<script src="dist/js/tether/tether.min.js"></script>
+		<script src="dist/js/bootstrap/bootstrap.min.js"></script>
+		<script src="dist/js/jquery.mCustomScrollbar.concat.min.js"></script>
+		<script src="dist/js/flatpickr.min.js"></script>
+		<!--<script src="dist/js/moment.min.js"></script>
+		<script src="dist/js/daterangepicker.js"></script>-->
+		<script src="dist/js/select2.full.min.js"></script>
+		<script src="dist/js/hubitat.js"></script>
+		<script src="dist/js/backend-functions.js"></script>
+	</body>
+</html>

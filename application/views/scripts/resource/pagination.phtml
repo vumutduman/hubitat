@@ -1,0 +1,24 @@
+<?php if($this->pageCount && $this->pageCount > 1){ ?>
+<?php
+	$qry = '';
+	if(array_key_exists('QUERY_STRING', $_SERVER) && strlen($_SERVER['QUERY_STRING']) > 0){
+		$qry = '?'.$_SERVER['QUERY_STRING'];
+	}
+?>
+	<div class="paginationContainer clearfix">
+        <?php if($this->current > 1){ ?>
+            <a href="<?php echo $this->url(array('page' => $this->previous)); ?><?php echo $qry; ?>" class="listCountTitle"><i class="fa fa-caret-left"></i> <?php echo $this->translate('Previous Page'); ?></a>
+        <?php } ?>
+        
+		<?php foreach($this->pagesInRange as $page){ ?>
+			<?php if($this->current == $page){ ?>
+				<a href="<?php echo $this->url(array('page'=>$page)); ?><?php echo $qry; ?>" class="currentPage"><?php echo $page; ?></a>
+			<?php }else{ ?>
+				<a href="<?php echo $this->url(array('page'=>$page)); ?><?php echo $qry; ?>"><?php echo $page; ?></a>
+			<?php } ?>
+		<?php } ?>
+		<?php if($this->total < $this->next){ ?>
+		  <a href="<?php echo $this->url(array('page' => $this->next)); ?><?php echo $qry; ?>" class="listCountTitle"><?php echo $this->translate('Next Page'); ?><i class="fa fa-caret-right"></i></a>
+		<?php } ?>
+	</div>
+<?php } ?>

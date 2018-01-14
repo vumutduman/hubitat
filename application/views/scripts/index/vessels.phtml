@@ -1,0 +1,42 @@
+<?php echo $this->render('partials/modals/add-vessel.phtml'); ?>
+<li class="second-sidebar">
+	<div class="second-sidebar-header">
+		<div class="second-sidebar-title">
+			<h3><?php echo $this->moduleTitle; ?></h3>
+		</div>
+		<div class="second-sidebar-actions">
+			<a class="search" data-toggle="collapse" href="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch"><span class="hubitat magnifier-lg"></span></a>
+			<a href="javascript:void(0)" class="add-item" data-toggle="modal" data-target="#addVessel"><span class="hubitat plus"></span></a>
+		</div>
+	</div>
+	<div class="second-sidebar-wrapper">
+		<div class="list-101">
+			<div class="second-sidebar-search collapse" id="collapseSearch">
+				<div class="form-group">
+					<input type="text" class="form-control search" data-target="list-container" id="secondSidebarSearch" aria-describedby="searchHelp" placeholder="Search for <?php echo $this->moduleTitle; ?>">
+					<span id="searchHelp" class="form-text text-muted">Star typing to filter vessel results.</span>
+				</div>
+			</div>
+
+			<!-- İsme göre sıralanacak -->
+			<div class="list-container">
+				<?php if(isset($this->oVesselList)){ ?>
+					<?php foreach($this->oVesselList as $listItem){ ?> 
+						<a href="<?php echo $this->url(array('vesselId'=>$listItem['_id']), 'Vessel'); ?>" title="Details" class="list-101-item"><?php echo $listItem['Name']; ?></a>
+					<?php } ?>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+</li><!-- /.second-sidebar -->
+
+<li class="main-content loading">
+	<div class="main-content-header">
+		<div class="module-300">
+			<a href="<?php echo $this->url(array(), 'Overview'); ?>" title="Overview">Overview</a>
+			<span class="hubitat right-arrow-bold divider"></span>
+			<span class="current-page">Vessels</span>
+		</div><!-- /.module-300 -->
+		<?php echo $this->render('partials/user-toolbar.phtml'); ?>
+	</div><!-- /.main-content-header -->
+</li><!-- /.main-content -->

@@ -1,0 +1,150 @@
+@font-face {
+  font-family: 'hubitat';
+  src:  url('../font/hubitat.eot?nyolgx');
+  src:  url('../font/hubitat.eot?nyolgx#iefix') format('embedded-opentype'),
+        url('../font/hubitat.ttf?nyolgx') format('truetype'),
+        url('../font/hubitat.woff?nyolgx') format('woff'),
+        url('../font/hubitat.svg?nyolgx#hubitat') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.hubitat {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'hubitat' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ship:before {
+  content: "\e917";
+}
+.certificate-2:before {
+  content: "\e900";
+}
+.certificate:before {
+  content: "\e901";
+}
+.chart:before {
+  content: "\e902";
+}
+.hexagon:before {
+  content: "\e90f";
+}
+.crew-2:before {
+  content: "\e905";
+}
+.crew-3:before {
+  content: "\e906";
+}
+.crew:before {
+  content: "\e907";
+}
+.file-stack:before {
+  content: "\e90d";
+}
+.pin:before {
+  content: "\e911";
+}
+.left-arrow-bold:before {
+  content: "\e910";
+}
+.down-arrow-bold:before {
+  content: "\e90c";
+}
+.up-arrow-bold:before {
+  content: "\e91a";
+}
+.right-arrow-bold:before {
+  content: "\e914";
+}
+.cross-lg-bold:before {
+  content: "\e90a";
+}
+.cross-lg:before {
+  content: "\e90b";
+}
+.checked-solid:before {
+  content: "\e903";
+}
+.checked:before {
+  content: "\e904";
+}
+.cross-circle-solid:before {
+  content: "\e908";
+}
+.cross-circle:before {
+  content: "\e909";
+}
+.filter-solid:before {
+  content: "\e90e";
+}
+.filter:before {
+  content: "\e91b";
+}
+.plus-solid:before {
+  content: "\e912";
+}
+.plus:before {
+  content: "\e913";
+}
+.trash-solid:before {
+  content: "\e918";
+}
+.trash:before {
+  content: "\e919";
+}
+.settings-solid:before {
+  content: "\e915";
+}
+.settings:before {
+  content: "\e916";
+}
+.settings-2-solid:before {
+  content: "\e91c";
+}
+.settings-2:before {
+  content: "\e91d";
+}
+.cross-circle-bold-solid:before {
+  content: "\e91e";
+}
+.cross-circle-bold:before {
+  content: "\e91f";
+}
+.plus-bold-solid:before {
+  content: "\e920";
+}
+.plus-bold:before {
+  content: "\e921";
+}
+.minus-bold-solid:before {
+  content: "\e922";
+}
+.minus-bold:before {
+  content: "\e923";
+}
+.undo-solid:before {
+  content: "\e924";
+}
+.undo:before {
+  content: "\e925";
+}
+.magnifier:before {
+  content: "\e926";
+}
+.magnifier-lg:before {
+  content: "\e927";
+}
+.handshake:before {
+  content: "\e928";
+}
+

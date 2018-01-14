@@ -1,0 +1,46 @@
+
+<li class="second-sidebar">
+	<div class="second-sidebar-header">
+		<div class="second-sidebar-title">
+			<h3><?php echo $this->moduleTitle; ?></h3>
+		</div>
+		<div class="second-sidebar-actions">
+			<a class="search" data-toggle="collapse" href="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch"><span class="hubitat magnifier-lg"></span></a>
+			<?php if($this->oUser['Role'] == 'Admin'){ ?>
+				<a href="<?php echo $this->url(array(), 'WorkOrderAdd'); ?>" class="add-item"><span class="hubitat plus"></span></a>
+			<?php } ?>
+		</div>
+	</div>
+	<div class="second-sidebar-wrapper">
+		<div class="list-102">
+			<div class="second-sidebar-search collapse" id="collapseSearch">
+				<div class="form-group">
+					<input type="text" class="form-control search" data-target="list-container" id="secondSidebarSearch" aria-describedby="searchHelp" placeholder="Search for <?php echo $this->moduleTitle; ?>">
+					<span id="searchHelp" class="form-text text-muted">Start typing to filter results.</span>
+				</div>
+			</div>
+
+			<?php if(isset($this->workOrders)){ ?>
+				<?php foreach($this->workOrders as $listItem){ ?> 
+					<a href="<?php echo $this->url(array('workorderId'=>$listItem['_id']), 'WorkOrder'); ?>" title="Details" class="list-102-item">
+						<span class="number">
+							#<?php echo $listItem['ProjectNo']; ?> / <?php echo $listItem['Vessel']['Port']; ?>
+						</span>
+						<span class="name"><?php echo $this->Content()->getVessel(array('_id'=>new MongoId($listItem['Vessel']['_id'])), 'Name'); ?></span>
+					</a>
+				<?php } ?>
+			<?php } ?>
+		</div>
+	</div>
+</li><!-- /.second-sidebar -->
+
+<li class="main-content ">
+	<div class="main-content-header">
+		<div class="module-300">
+			<a href="<?php echo $this->url(array(), 'Overview'); ?>" title="Overview">Overview</a>
+			<span class="hubitat right-arrow-bold divider"></span>
+			<span class="current-page">Work Orders</span>
+		</div><!-- /.module-300 -->
+		<?php echo $this->render('partials/user-toolbar.phtml'); ?>
+	</div><!-- /.main-content-header -->
+</li><!-- /.main-content -->

@@ -1,0 +1,64 @@
+<?php echo $this->render('partials/modals/add-file.phtml'); ?>
+<li class="main-content">
+	<div class="main-content-header">
+		<div class="module-300">
+			<a href="<?php echo $this->url(array(), 'Overview'); ?>" title="Overview">Overview</a>
+			<span class="hubitat right-arrow-bold divider"></span>
+			<span class="current-page"><?php echo $this->fileType['title']; ?></span>
+		</div><!-- /.module-300 -->
+		<?php echo $this->render('partials/user-toolbar.phtml'); ?>
+	</div><!-- /.main-content-header -->
+	<div class="main-content-wrapper">
+		<div class="module xl">
+			<div class="module-header">
+				<h3><?php echo $this->fileType['title']; ?> List</h3>
+				<a href="javascript:void(0)" id="addFile" data-toggle="modal" data-target="#addNewFile">
+					<span class="hubitat plus" ></span>
+				</a>
+			</div>
+			<div class="module-606">
+				<?php if(isset($this->oFilesList)){ ?>
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th scope="row">#</th>
+								<th>Name</th>
+								<th>Start Date</th>
+								<th>Valid Through</th>
+								<th>File</th>
+								<th>Days Left</th>
+							</tr>
+						</thead>
+						<tbody>
+						<?php $i=1; foreach($this->oFilesList as $file){ ?>
+							<tr>
+								<th scope="row"><?php echo $i; ?></th>
+								<td>
+									<a href="<?php echo $this->url(array('fileId'=>$file['_id'], 'type'=>$file['Type']), 'FileDetails'); ?>" class="loadEditFile">
+										<?php echo $file['Name']; ?>
+									</a>
+								</td>
+								<td class="date"><?php echo $file['StartDate']; ?></td>
+								<td class="date"><?php echo $file['EndDate']; ?></td>
+								<td>
+									<a href="content/files/<?php echo $file['File']; ?>" title="<?php echo $file['File']; ?>" target="_blank"><?php echo $file['File']; ?></a>
+								</td>
+								<td class="colored green">
+									<?php echo $this->Content()->getRemainingDays($file['StartDate'], $file['EndDate']); ?>
+								</td>
+							</tr>
+						<?php $i++; } ?>
+						</tbody>
+					</table>
+				<?php }else{ ?>
+					<div class="wells">
+						<br /><br />
+						<p>No Files found.</p>
+					</div>
+				<?php } ?>
+			</div>
+
+		</div><!-- /.module-606 -->
+	</div><!-- /.module xl -->
+</div><!-- /.main-content-wrapper -->
+</li><!-- /.main-content -->

@@ -1,0 +1,196 @@
+<?php echo $this->render('partials/modals/delete-crew.phtml'); ?>
+<?php echo $this->render('partials/modals/add-crew.phtml'); ?>
+<li class="second-sidebar">
+	<div class="second-sidebar-header">
+		<div class="second-sidebar-title">
+			<h3><?php echo $this->moduleTitle; ?></h3>
+		</div>
+		<div class="second-sidebar-actions">
+			<a class="search" data-toggle="collapse" href="#collapseSearch" aria-expanded="false" aria-controls="collapseSearch"><span class="hubitat magnifier-lg"></span></a>
+			<a href="javascript:void(0)" class="add-item" data-toggle="modal" data-target="#addCrew"><span class="hubitat plus"></span></a>
+		</div>
+	</div>
+	<div class="second-sidebar-wrapper">
+		<div class="list-101">
+			<div class="second-sidebar-search collapse" id="collapseSearch">
+				<div class="form-group">
+					<input type="text" class="form-control search" data-target="list-container" id="secondSidebarSearch" aria-describedby="searchHelp" placeholder="Search for <?php echo $this->moduleTitle; ?>">
+					<span id="searchHelp" class="form-text text-muted">Start typing to filter crew results.</span>
+				</div>
+			</div>
+
+			<!-- İsme göre sıralanacak -->
+			<div class="list-container">
+				<?php if(isset($this->oUserList)){ ?>
+					<?php foreach($this->oUserList as $listItem){ ?> 
+						<a href="<?php echo $this->url(array('crewId'=>$listItem['_id']), 'Crew'); ?>" title="Details" class="list-101-item <?php echo ($listItem['_id'] == $this->oCrew['_id'] ? 'active' : ''); ?>">
+							<?php echo $listItem['Name']." ".$listItem['Surname']; ?>
+						</a>
+					<?php } ?>
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+</li><!-- /.second-sidebar -->
+
+<li class="main-content">
+	<div class="main-content-header">
+		<div class="module-300">
+			<a href="<?php echo $this->url(array(), 'Overview'); ?>" title="Overview">Overview</a>
+			<span class="hubitat right-arrow-bold divider"></span>
+			<a href="<?php echo $this->url(array(), 'Crews'); ?>" title="Crews">Crews</a>
+			<span class="hubitat right-arrow-bold divider"></span>
+			<span class="current-page"><?php echo $this->oCrew['Name']." ".$this->oCrew['Surname']; ?></span>
+		</div><!-- /.module-300 -->
+		<?php echo $this->render('partials/user-toolbar.phtml'); ?>
+	</div><!-- /.main-content-header -->
+
+	<div class="main-content-wrapper">
+		<form method="POST" action="" enctype="multipart/form-data">
+			<div class="module md">
+				<div class="module-header dropdown">
+					<h3>Profile</h3>
+					<?php if($this->oUser['Role'] == 'Admin'){ ?>
+						<?php if($this->oUser['_id'] != $this->oCrew['_id']){ ?>
+							<a href="javascript:void(0)" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<span class="hubitat settings" ></span>
+							</a>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+								<a class="dropdown-item danger" href="javascript:void(0)" data-toggle="modal" data-target="#deleteCrew">Delete Profile</a>
+							</div>
+						<?php } ?>
+					<?php } ?>
+				</div>
+				<div class="module-content">
+					<div class="module-400">
+						<div class="image">
+							<img src="content/images/profile/md/<?php echo $this->oCrew['Avatar']; ?>" id="profileImage">
+							<a href="javascript:void(0)" onclick="$('#changeProfileImage').click();">Change Image</a>
+							<input type="file" class="form-control-file" name="ProfileImage" id="changeProfileImage">
+						</div>
+						<div class="content">
+							<div class="form-group row">
+								<label for="profileName" class="col-sm-3 col-form-label">Name</label>
+								<div class="col-sm-9">
+									<input class="form-control" type="text" name="Name" value="<?php echo $this->oCrew['Name']; ?>" id="profileName">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="profileSurname" class="col-sm-3 col-form-label">Surname</label>
+								<div class="col-sm-9">
+									<input class="form-control" type="text" name="Surname" value="<?php echo $this->oCrew['Surname']; ?>" id="profileSurname">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="profileEmail" class="col-sm-3 col-form-label">Email</label>
+								<div class="col-sm-9">
+									<input class="form-control" type="email" name="Email" value="<?php echo $this->oCrew['Email']; ?>" id="profileEmail">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="profileOffice" class="col-sm-3 col-form-label">Office</label>
+								<div class="col-sm-9">
+									<select class="form-control custom-select" id="profileOffice" name="Office">
+										<option value="0">Unassigned</option>
+										<?php if(isset($this->offices) && is_array($this->offices)){ ?>
+											<?php foreach($this->offices as $office){ ?>
+												<?php if($office['_id'] == $this->oCrew['Office']){ ?>
+													<option value="<?php echo $office['_id']; ?>" selected="selected"><?php echo $office['Name']; ?></option>
+												<?php }else{ ?>
+													<option value="<?php echo $office['_id']; ?>"><?php echo $office['Name']; ?></option>
+												<?php } ?>
+											<?php } ?>
+										<?php } ?>
+									</select>
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="profilePhone" class="col-sm-3 col-form-label">Phone</label>
+								<div class="col-sm-9">
+									<input class="form-control" type="tel" value="<?php echo $this->oCrew['Phone']; ?>" name="Phone" id="profilePhone">
+								</div>
+							</div>
+							<div class="form-group row">
+								<label for="profileGsm" class="col-sm-3 col-form-label">GSM</label>
+								<div class="col-sm-9">
+									<input class="form-control" type="tel" value="<?php echo $this->oCrew['GSM']; ?>" id="profileGsm" name="GSM">
+								</div>
+							</div>
+
+							<!-- Buradan sonraki kısımları [divider, role, username ve password] eğer kendisi ise veya admin ise görüntüleyebilecek. Diğer kullanıcılar göremeyecek. --> 
+							<?php if($this->oUser['Role'] == 'Admin'){ ?>
+								<div class="divider"></div>
+								<div class="form-group row">
+									<label for="profileRole" class="col-sm-3 col-form-label">Role</label>
+									<div class="col-sm-9" style="font-size: 13px;">
+										<select class="form-control custom-select" id="profileRole" name="Role">
+											<option <?php echo ($this->oCrew['Role'] == 'Admin' ? 'selected' : '') ?>>Admin</option>
+											<option <?php echo ($this->oCrew['Role'] == 'Chef' ? 'selected' : '') ?>>Chef</option>
+											<option <?php echo ($this->oCrew['Role'] == 'User' ? 'selected' : '') ?>>User</option>
+										</select>
+									</div>
+								</div>
+							<?php } ?>
+							<?php if($this->oUser['_id'] == $this->oCrew->_id || $this->oUser['Role'] == 'Admin'){ ?>
+								<div class="form-group row">
+									<label for="profileUsername" class="col-sm-3 col-form-label">Username</label>
+									<div class="col-sm-9">
+										<input class="form-control" type="text" value="<?php echo $this->oCrew['Username']; ?>" id="profileUsername" name="Username">
+									</div>
+								</div>
+								<div class="form-group row">
+									<label for="profilePassword" class="col-sm-3 col-form-label">Password</label>
+									<div class="col-sm-9">
+										<input class="form-control" type="password" id="profilePassword" name="Password">
+									</div>
+								</div>
+							<?php } ?>
+
+						</div><!-- /.content -->
+					</div><!-- /.module-400 -->
+
+
+				</div><!-- /.module-content -->
+			</div><!-- /.module .md -->
+
+		</div><!-- /.main-content-wrapper -->
+
+		<div class="module-499">
+			<div class="module-499-wrapper">
+				<input type="submit" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Cancel">
+				<input type="submit" role="button" class="module-499-btn right save" value="SAVE">
+			</div><!-- /.module-499-wrapper -->
+		</div><!-- /.module-499 -->
+	</form>
+</li><!-- /.main-content -->
+
+<!-- Deleting Confirmation Modal - #deleteCrew -->
+<div class="modal fade" id="deleteCrew" tabindex="-1" role="dialog" aria-hidden="true">
+	<form name="crew-delete" action="<?php echo $this->url(array('crewId'=>$this->oCrew['_id']), 'CrewDelete'); ?>" method="GET">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span class="hubitat cross-lg-bold" aria-hidden="true"></span>
+					</button>
+					<h4>Delete Crew</h4>
+					<p class="text-muted"><?php echo $this->oCrew['Name']; ?> <?php echo $this->oCrew['Surname']; ?></p>
+				</div>
+				<div class="modal-body xs">
+					<div class="module-405">
+						<p>
+							You are about to delete a user profile.
+							<br><strong>It cannot be undone.</strong>
+						</p>
+					</div>
+				</div><!-- /.modal-body -->
+				<div class="module-499">
+					<div class="module-499-wrapper">
+						<input type="cancel" role="button" class="module-499-btn left cancel" data-dismiss="modal" aria-label="Close" value="Don't Delete">
+						<input type="submit" role="button" class="module-499-btn right save" value="DELETE">
+					</div><!-- /.module-499-wrapper -->
+				</div><!-- /.module-499 -->
+			</div><!-- /.modal-content -->
+		</div><!-- /.modal-dialog -->
+	</form>
+</div><!-- /.modal -->

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<base href="<?php echo $this->Assets()->baseUrl(); ?>"/>	
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>Welcome to Hubitat</title>
+
+		<link rel="stylesheet" type="text/css" href="dist/css/bootstrap/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="dist/css/main.css">
+		<link rel="icon" type="image/png" href="content/images/favicon.png" />
+		<!-- for iOS devices -->
+		<meta name="apple-mobile-web-app-title" content="Hubitat" />
+		<link rel="apple-touch-icon-precomposed" href="content/images/apple-touch-icon.png" />
+	</head>
+
+	<body>
+		<!-- Forgot Password Modal - #forgotPassword -->
+		<div class="modal fade" id="forgotPassword" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							&#x2715;
+						</button>
+						<h4>Reset Password</h4>
+					</div>
+					<form method="POST" action="<?php echo $this->url(array(), 'ResetPassword'); ?>">
+						<div class="modal-body xs">
+							<div class="module-3">
+								<p>
+									Enter the email address associated with your account, and we’ll email you a link to reset your password.
+								</p>
+								<div class="form-group">
+									<label for="emailModal">Email</label>
+									<input type="email" name="email" class="form-control" id="emailModal" aria-describedby="emailModal" required>
+									<span class="form-text text-muted">Make sure you entered your email address correctly.</span>
+								</div>
+							</div>
+						</div><!-- /.modal-body -->
+						<div class="module-499">
+							<div class="module-499-wrapper">
+								<input type="submit" role="button" class="module-499-btn right save" value="SEND RESET LINK">
+							</div><!-- /.module-499-wrapper -->
+						</div><!-- /.module-499 -->
+					</form>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+		<?php if(isset($this->password_reminder)){ ?>
+			<!-- Password reset mail sent -->
+			<div class="module-1-wrapper">
+				<div class="module-1">
+					<div class="module-1-item-wrapper">
+						<div class="module-1-item logo">
+							<img src="content/images/hubitat-logo-vertical.svg" alt="Hubitat Logo">
+						</div><!-- /.module-1-item logo -->
+						<?php if($this->password_reminder == 1){ ?>
+							<div class="module-1-item login-form" style="text-align: center;">
+								Please check your email. Instructions has been sent.<br />
+							</div><!-- /.module-1-item login-form -->
+						<?php }else if($this->password_reminder == 2){ ?>
+							<div class="module-1-item login-form" style="text-align: center;color: red;">
+								<strong>Wrong E-mail.</strong> <br /><a href="<?php echo $this->url(array('reset'=>''), 'Login'); ?>">Go back and try again</a>
+							</div><!-- /.module-1-item login-form -->
+						<?php } ?>
+					</div><!-- /.module-1-item-wrapper -->
+				</div><!-- /.module-1 -->
+			</div><!-- /.module-1-wrapper -->
+		<?php }else{ ?>
+			<div class="module-1-wrapper">
+				<div class="module-1">
+					<div class="module-1-item-wrapper">
+						<div class="module-1-item logo">
+							<img src="content/images/hubitat-logo-vertical.svg" alt="Hubitat Logo">
+						</div><!-- /.module-1-item logo -->
+						<form action="<?php echo $this->url(array(), 'Login'); ?>" method="POST">
+							<div class="module-1-item login-form">
+								<div class="form-group">
+									<label for="username">Username / Email</label>
+									<input type="text" class="form-control" id="username" aria-describedby="username" name="emailAddr">
+								</div>
+								<div class="form-group">
+									<label for="password">Password</label>
+									<input type="password" class="form-control" id="password" aria-describedby="password" name="Password">
+								</div>
+							</div><!-- /.module-1-item login-form -->
+							<div class="module-1-item buttons">
+								<a href="javascript:void(0)" class="forgot" data-toggle="modal" data-target="#forgotPassword">Forgot Password?</a>
+								<button type="submit" class="login">LOGIN</button>
+							</div>
+						</form>
+
+					</div><!-- /.module-1-item-wrapper -->
+				</div><!-- /.module-1 -->
+			</div><!-- /.module-1-wrapper -->
+		<?php } ?>
+
+		<div class="imprint">
+			<a href="imprint.html" target="_blank">Imprint</a>
+			<span class="version">v2.0</span>
+		</div>
+
+		<!-- Page Scripts -->
+		<script src="dist/js/jquery-2.2.1.min.js"></script>
+		<script src="dist/js/bootstrap/bootstrap.min.js"></script>
+		<script src="dist/js/hubitat.js"></script>
+	</body>
+</html>
